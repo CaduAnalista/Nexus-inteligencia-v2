@@ -7,11 +7,56 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Inteligência de Rede | NEXUS</title>
 
-    <!-- Transição de chegada pelo portal do login -->
-    <script src="../JAVA/portal-chegada.js"></script>
+    <!-- Módulo acessado exclusivamente pela Visão Geral -->
+    <script>
+      if (window.self === window.top) {
+        window.location.replace('./visao-geral.html');
+      } else {
+        document.documentElement.classList.add('nexus-integrado');
+      }
+    </script>
 
     <link rel="icon" type="image/png" href="../ASSETS/nexus-icone-64.png">
     <link rel="stylesheet" href="../CSS/inteligencia.css">
+    <!-- Estilos específicos da incorporação; não alteram os indicadores -->
+    <style>
+      html.nexus-integrado,
+      html.nexus-integrado body { width: 100%; min-height: 100%; margin: 0; }
+      html.nexus-integrado .app {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 100vh;
+        margin: 0 !important;
+        padding: 0 !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+      /* Mantém os elementos no DOM para compatibilidade com inteligencia.js. */
+      html.nexus-integrado #menu,
+      html.nexus-integrado #menuFundo,
+      html.nexus-integrado #abrirMenu {
+        display: none !important;
+      }
+      html.nexus-integrado #conteudo {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 12px 16px 24px !important;
+        grid-column: 1 / -1 !important;
+      }
+      html.nexus-integrado #conteudo > .topo {
+        min-height: 0 !important;
+        padding: 6px 0 12px !important;
+        margin: 0 0 12px !important;
+        gap: 10px !important;
+      }
+      html.nexus-integrado .topo-sobretitulo { display: none !important; }
+      html.nexus-integrado #tituloTela { margin: 0 !important; }
+      @media (max-width: 700px) {
+        html.nexus-integrado #conteudo { padding: 10px !important; }
+      }
+    </style>
 
     <!-- Leitura e exportação de Excel (SheetJS 0.20.3, dentro do projeto: funciona offline) -->
     <script src="../LIB/xlsx-0.20.3.full.min.js" defer></script>
@@ -20,7 +65,7 @@
 <div class="app sem-transicao" id="app">
 
     <!-- =====================================================
-         MENU LATERAL
+         MENU LEGADO (OCULTO NO MODO INTEGRADO)
     ====================================================== -->
     <aside class="menu" id="menu" aria-label="Menu principal">
         <div class="menu-topo">
