@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,12 +11,10 @@
   <link rel="stylesheet" href="../CSS/login.css">
 </head>
 <body>
-  <!-- Rede de pontos ao fundo (o "nexus" de dados) -->
   <canvas class="fundo-rede" id="fundoRede" aria-hidden="true"></canvas>
   <div class="fundo-brilho" aria-hidden="true"></div>
   <div class="fundo-grade" aria-hidden="true"></div>
 
-  <!-- Filtro do modo alerta: transforma o NEXUS em tons de vermelho (pela luminância) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <filter id="filtroAlerta" color-interpolation-filters="sRGB">
       <feColorMatrix type="matrix" values="0.234 0.787 0.079 0 0.08
@@ -26,8 +25,6 @@
   </svg>
 
   <main class="cena" id="cena">
-
-    <!-- PERSONAGEM -->
     <section class="lado-nexus" aria-label="NEXUS, assistente de dados">
       <div class="balao" id="balao" aria-live="polite">
         <span class="balao-ponto" aria-hidden="true"></span>
@@ -47,7 +44,6 @@
           <div class="nexus-cabeca" id="nexusCabeca">
             <img src="../ASSETS/nexus-cabeca.png" class="nexus-cabeca-img" alt="NEXUS, andróide de armadura branca com detalhes em ciano" draggable="false">
 
-            <!-- Íris desenhadas sobre os olhos vazios (coordenadas da imagem 1105 × 1424) -->
             <svg class="nexus-olhos" viewBox="0 0 1105 1424" aria-hidden="true">
               <defs>
                 <clipPath id="olhoE">
@@ -82,7 +78,6 @@
                   <stop offset="1" stop-color="#DCC6C5"/>
                 </linearGradient>
 
-                <!-- Íris e reflexos reutilizados nos dois olhos -->
                 <g id="modeloIris">
                   <circle r="31" fill="url(#gradIris)"/>
                   <circle r="23" fill="none" stroke="#00E5FF" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="2 4"/>
@@ -127,7 +122,6 @@
       <div class="nexus-plataforma" aria-hidden="true"></div>
     </section>
 
-    <!-- FORMULÁRIO -->
     <section class="lado-form" id="painelLogin" aria-labelledby="tituloLogin">
       <header class="marca">
         <img src="../ASSETS/nexus-icone-64.png" alt="" class="marca-icone" width="44" height="44">
@@ -140,7 +134,7 @@
 
       <div class="titulo">
         <p class="sobretitulo">Central de indicadores</p>
-        <h1 id="tituloLogin">Acesse seu painel</h1>
+        <h1 id="tituloLogin">Acesse a Visão Geral</h1>
         <p class="subtitulo">Importe uma planilha e veja os indicadores na hora. Os dados ficam só no seu navegador.</p>
       </div>
 
@@ -150,20 +144,6 @@
           <div class="campo-caixa">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
             <input id="nome" name="nome" type="text" placeholder="Como você se chama?" autocomplete="name" required>
-          </div>
-        </div>
-
-        <div class="campo">
-          <label for="painel">Painel</label>
-          <div class="campo-caixa campo-select">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-            <select id="painel" name="painel" required>
-              <option value="" selected disabled>Selecione o painel</option>
-              <option value="Inteligência de Rede">Inteligência de Rede</option>
-              <option value="Relacionamento">Relacionamento</option>
-              <option value="Saúde e Social">Saúde e Social</option>
-            </select>
-            <svg class="seta" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </div>
         </div>
 
@@ -181,8 +161,6 @@
           <span>Entrar</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
         </button>
-
-        <button class="botao-demo" id="botaoDemo" type="button">Usar acesso de demonstração</button>
       </form>
 
       <footer class="rodape">
