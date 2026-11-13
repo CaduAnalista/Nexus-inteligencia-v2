@@ -39,6 +39,9 @@
     "submenuDashboards"
   );
 
+  const botaoProblemas = document.getElementById("botaoProblemasSetoriais");
+  const submenuProblemas = document.getElementById("submenuProblemasSetoriais");
+
   const paginaInicial = document.getElementById(
     "paginaInicial"
   );
@@ -123,6 +126,16 @@
       titulo: "Saúde e Social",
       subtitulo:
         "Indicadores de beneficiários e produtos"
+    },
+
+    "formulario-reuniao": {
+      titulo: "Formulário para a reunião",
+      subtitulo: "Registro de assuntos para as reuniões setoriais"
+    },
+
+    "assuntos-por-setor": {
+      titulo: "Assuntos por setor",
+      subtitulo: "Acompanhamento dos assuntos e suas conclusões"
     },
 
     "captacao-cadastro": {
@@ -265,6 +278,30 @@
   );
 
   /* ================================================
+     SUBMENU PROBLEMAS-SETORIAIS
+  ================================================= */
+
+  function definirSubmenuProblemas(aberto) {
+    if (!botaoProblemas || !submenuProblemas) return;
+    submenuProblemas.hidden = !aberto;
+    submenuProblemas.classList.toggle("aberto", aberto);
+    botaoProblemas.setAttribute("aria-expanded", String(aberto));
+    botaoProblemas.setAttribute(
+      "aria-label",
+      aberto ? "Recolher Problemas-Setoriais" : "Expandir Problemas-Setoriais"
+    );
+  }
+
+  if (botaoProblemas && submenuProblemas) {
+    botaoProblemas.addEventListener("click", () => {
+      if (menuRecolhido) definirMenuLateral(false);
+      definirSubmenu(true);
+      definirSubmenuProblemas(submenuProblemas.hidden);
+    });
+    definirSubmenuProblemas(false);
+  }
+
+  /* ================================================
      CABEÇALHO DINÂMICO
   ================================================= */
 
@@ -302,6 +339,12 @@
       botaoVisaoGeral.removeAttribute(
         "aria-current"
       );
+    }
+
+    if (botaoProblemas) {
+      const ativoProblemas = ["formulario-reuniao", "assuntos-por-setor"].includes(idPagina);
+      botaoProblemas.classList.toggle("ativo", ativoProblemas);
+      if (ativoProblemas) definirSubmenuProblemas(true);
     }
 
     botoesDashboards.forEach(botao => {
@@ -518,6 +561,12 @@
 
       const idPagina = botao.dataset.pagina;
       const url = botao.dataset.url;
+
+      if (["formulario-reuniao", "assuntos-por-setor"].includes(idPagina)) {
+        if (menuRecolhido) definirMenuLateral(false);
+        definirSubmenu(true);
+        definirSubmenuProblemas(true);
+      }
 
       abrirDashboard(idPagina, url);
     });
