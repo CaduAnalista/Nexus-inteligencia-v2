@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A0E1A">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Inteligência de Rede | NEXUS</title>
+
+    <!-- Transição de chegada pelo portal do login -->
+    <script src="../JAVA/portal-chegada.js"></script>
+
+    <link rel="icon" type="image/png" href="../ASSETS/nexus-icone-64.png">
+    <link rel="stylesheet" href="../CSS/inteligencia.css">
+
+    <!-- Leitura e exportação de Excel (SheetJS 0.20.3, dentro do projeto: funciona offline) -->
+    <script src="../LIB/xlsx-0.20.3.full.min.js" defer></script>
+</head>
+<body>
+<div class="app sem-transicao" id="app">
+
+    <!-- =====================================================
+         MENU LATERAL
+    ====================================================== -->
+    <aside class="menu" id="menu" aria-label="Menu principal">
+        <div class="menu-topo">
+            <a class="marca" href="./inteligencia.html" aria-label="NEXUS, Inteligência de Dados">
+                <img src="../ASSETS/nexus-icone-64.png" alt="" width="40" height="40" class="marca-icone">
+                <span class="marca-texto">
+                    <strong>NEXUS</strong>
+                    <small>Inteligência de Dados</small>
+                </span>
+            </a>
+            <button class="menu-recolher" id="menuRecolher" type="button" aria-label="Recolher menu" aria-expanded="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+            </button>
+        </div>
+
+        <div class="menu-painel">
+            <span class="menu-rotulo">Painel</span>
+            <strong class="menu-painel-nome">Inteligência de Rede</strong>
+        </div>
+
+        <!-- Seletor suspenso: pula direto para a tela desejada -->
+        <label class="menu-seletor">
+            <span class="menu-rotulo">Ir para a tela</span>
+            <select id="seletorTela" aria-label="Ir para a tela"></select>
+        </label>
+
+        <nav class="menu-nav" id="menuNav" aria-label="Telas do painel"></nav>
+
+        <div class="menu-rodape">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <span>Os dados ficam só neste navegador.</span>
+        </div>
+    </aside>
+
+    <div class="menu-fundo" id="menuFundo" hidden></div>
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+    <main class="conteudo" id="conteudo">
+
+        <header class="topo">
+            <button class="botao-icone topo-menu" id="abrirMenu" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+
+            <div class="topo-titulo">
+                <span class="topo-sobretitulo">Inteligência de Rede</span>
+                <h1 id="tituloTela">Visão operacional</h1>
+            </div>
+
+            <div class="topo-info" id="topoInfo">
+                <!-- Situação da ocorrência (STATUS_OCORRENCIA): filtra a tela inteira -->
+                <div class="situacao">
+                    <span class="filtro-rotulo">Situação</span>
+                    <div class="segmentado" id="filtroSituacao" role="group" aria-label="Situação da ocorrência">
+                        <button type="button" data-situacao="" aria-pressed="true">Todos <small id="qtdTodos">0</small></button>
+                        <button type="button" data-situacao="pendente" aria-pressed="false">Pendentes <small id="qtdPendentes">0</small></button>
+                        <button type="button" data-situacao="encerrado" aria-pressed="false">Encerrados <small id="qtdEncerrados">0</small></button>
+                    </div>
+                </div>
+                <span class="info-chip" title="Data usada nos cartões de hoje">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+                    Hoje: <strong id="infoHoje">—</strong>
+                </span>
+            </div>
+
+            <label class="botao botao-primario" for="arquivoExcel">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+                <span>Importar planilha</span>
+            </label>
+            <input type="file" id="arquivoExcel" accept=".xlsx,.xls,.csv" hidden>
+        </header>
+
+        <!-- ============ TELA 1: VISÃO OPERACIONAL ============ -->
+        <section class="tela" id="tela-operacional" data-tela="operacional" data-titulo="Visão operacional" data-icone="painel">
+
+            <!-- Filtros -->
+            <div class="filtros" id="filtros" aria-label="Filtros">
+                <div class="filtro">
+                    <button class="filtro-botao" id="botaoPeriodo" type="button" aria-haspopup="dialog" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+                        <span class="filtro-rotulo">Abertura</span>
+                        <span class="filtro-valor" id="valorPeriodo">Todo o período</span>
+                        <svg class="seta" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="popover" id="popoverPeriodo" hidden>
+                        <div class="periodo-campos">
+                            <label>De <input type="date" id="periodoDe"></label>
+                            <label>Até <input type="date" id="periodoAte"></label>
+                        </div>
+                        <div class="atalhos" id="atalhosPeriodo">
+                            <button type="button" data-atalho="hoje">Hoje</button>
+                            <button type="button" data-atalho="7">7 dias</button>
+                            <button type="button" data-atalho="30">30 dias</button>
+                            <button type="button" data-atalho="mes">Mês atual</button>
+                            <button type="button" data-atalho="tudo">Tudo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filtro">
+                    <label class="filtro-botao filtro-select">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+                        <span class="filtro-rotulo">Setor</span>
+                        <select id="filtroSetor" aria-label="Setor"><option value="">Todos</option></select>
+                        <svg class="seta" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </label>
+                </div>
+
+                <div class="filtro">
+                    <button class="filtro-botao" id="botaoOcorrencia" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                        <span class="filtro-rotulo">Ocorrência</span>
+                        <span class="filtro-valor" id="valorOcorrencia">Todas</span>
+                        <svg class="seta" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="popover popover-lista" id="popoverOcorrencia" hidden>
+                        <input type="search" id="buscaOcorrencia" placeholder="Buscar ocorrência..." aria-label="Buscar ocorrência">
+                        <div class="lista-opcoes" id="listaOcorrencia" role="listbox" aria-multiselectable="true"></div>
+                        <div class="popover-rodape">
+                            <span id="contaOcorrencia">0 selecionadas</span>
+                            <button type="button" class="link" id="limparOcorrencia">Limpar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canal de comunicação (coluna DESC_COMUNICACAO) -->
+                <div class="filtro filtro-tipos" id="grupoCanal">
+                    <span class="filtro-rotulo" title="Canal de comunicação (DESC_COMUNICACAO)">Canal</span>
+                    <div class="chips" id="chipsCanal" role="group" aria-label="Canal de comunicação"></div>
+                    <div class="filtro-mais">
+                        <button type="button" class="chip chip-mais" id="botaoMaisCanais" aria-haspopup="listbox" aria-expanded="false" aria-pressed="false" hidden>+0</button>
+                        <div class="popover popover-lista popover-direita" id="popoverCanais" hidden>
+                            <span class="filtro-rotulo">Outros canais</span>
+                            <div class="lista-opcoes" id="listaMaisCanais" role="listbox" aria-multiselectable="true"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="botao-icone limpar-filtros" id="limparFiltros" type="button" title="Limpar todos os filtros" aria-label="Limpar todos os filtros">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                </button>
+            </div>
+
+            <!-- Faixa de indicadores -->
+            <div class="faixa">
+                <div class="kpis">
+                    <article class="kpi kpi-destaque">
+                        <div class="kpi-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+                        <div class="kpi-texto">
+                            <span class="kpi-rotulo">Protocolos pendentes</span>
+                            <span class="kpi-apoio" id="apoioPendentes">em aberto</span>
+                        </div>
+                        <strong class="kpi-valor" id="kpiPendentes">—</strong>
+                    </article>
+                    <article class="kpi">
+                        <div class="kpi-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+                        <div class="kpi-texto">
+                            <span class="kpi-rotulo">Abertos hoje</span>
+                            <span class="kpi-apoio" id="apoioAbertosHoje">—</span>
+                        </div>
+                        <strong class="kpi-valor" id="kpiAbertosHoje">—</strong>
+                    </article>
+                    <article class="kpi">
+                        <div class="kpi-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></div>
+                        <div class="kpi-texto">
+                            <span class="kpi-rotulo">Encerrados hoje</span>
+                            <span class="kpi-apoio" id="apoioEncerradosHoje">—</span>
+                        </div>
+                        <strong class="kpi-valor" id="kpiEncerradosHoje">—</strong>
+                    </article>
+                </div>
+
+                <article class="cartao setores">
+                    <header class="cartao-topo">
+                        <div>
+                            <h2 id="tituloSetores">Protocolos por setor</h2>
+                            <p class="cartao-apoio">Prazo RN 623 em dias úteis (pendentes até hoje, encerrados até o encerramento) · clique num setor para filtrar</p>
+                        </div>
+                        <ul class="legenda" aria-label="Legenda">
+                            <li><i class="ponto ok"></i>Em dia <small>&lt; 4 dias</small></li>
+                            <li><i class="ponto atencao"></i>Atenção <small>4 a 5</small></li>
+                            <li><i class="ponto atraso"></i>Atraso <small>&gt; 5</small></li>
+                        </ul>
+                    </header>
+                    <div class="setores-lista" id="setoresLista">
+                        <p class="vazio-pequeno">Importe uma planilha para ver os setores.</p>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Tabela de protocolos -->
+            <article class="cartao tabela-cartao">
+                <header class="tabela-topo">
+                    <div class="tabela-titulo">
+                        <h2>Protocolos</h2>
+                        <span class="contador" id="contadorTabela">0</span>
+                        <span class="tabela-fonte" id="chipBase" hidden>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+                            <span id="infoBase"></span>
+                        </span>
+                    </div>
+                    <div class="tabela-acoes">
+                        <label class="busca">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                            <input type="search" id="buscaTabela" placeholder="Protocolo, CPF ou e-mail" aria-label="Buscar na tabela">
+                        </label>
+                        <button class="botao botao-secundario" id="exportarExcel" type="button" disabled>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+                            <span>Exportar Excel</span>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="tabela-area" id="tabelaArea">
+                    <table class="tabela" id="tabela">
+                        <colgroup>
+                            <col class="c-protocolo"><col class="c-cpf"><col class="c-email"><col class="c-setor">
+                            <col class="c-ocorrencia"><col class="c-data"><col class="c-data"><col class="c-status"><col class="c-obs">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col" data-ordem="protocolo">Protocolo</th>
+                                <th scope="col" data-ordem="cpf">CPF</th>
+                                <th data-ordem="nome">Beneficiário</th>
+                                <th scope="col" data-ordem="email">E-mail</th>
+                                <th scope="col" data-ordem="setor">Setor</th>
+                                <th scope="col" data-ordem="ocorrencia">Ocorrência</th>
+                                <th scope="col" data-ordem="abertura" aria-sort="descending">Abertura</th>
+                                <th scope="col" data-ordem="previsao">Previsão</th>
+                                <th scope="col" data-ordem="prazo">Status</th>
+                                <th scope="col">Observação de abertura</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabela"></tbody>
+                    </table>
+
+                    <div class="vazio" id="vazio">
+                        <div class="vazio-icone">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+                        </div>
+                        <strong id="vazioTitulo">Nenhuma planilha carregada</strong>
+                        <p id="vazioTexto">Clique em <b>Importar planilha</b> ou arraste o arquivo (.xlsx, .xls ou .csv) para esta janela.</p>
+                    </div>
+                </div>
+
+                <footer class="paginacao" id="paginacao">
+                    <span id="infoPagina">—</span>
+                    <div class="paginacao-botoes">
+                        <button class="botao-icone" id="paginaAnterior" type="button" aria-label="Página anterior" disabled>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+                        </button>
+                        <span id="numeroPagina">—</span>
+                        <button class="botao-icone" id="proximaPagina" type="button" aria-label="Próxima página" disabled>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                        </button>
+                    </div>
+                </footer>
+            </article>
+        </section>
+    </main>
+</div>
+
+<!-- Arraste e solte -->
+<div class="soltar" id="soltar" hidden>
+    <div class="soltar-caixa">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+        <strong>Solte a planilha aqui</strong>
+        <span>.xlsx, .xls ou .csv</span>
+    </div>
+</div>
+
+<!-- Carregando -->
+<div class="carregando" id="carregando" hidden>
+    <div class="carregando-caixa">
+        <span class="giro" aria-hidden="true"></span>
+        <strong>Lendo a planilha...</strong>
+        <span id="carregandoTexto">Isso pode levar alguns segundos.</span>
+    </div>
+</div>
+
+<!-- Observação completa -->
+<dialog class="detalhe" id="detalhe">
+    <header>
+        <div>
+            <span class="detalhe-rotulo">Protocolo</span>
+            <strong id="detalheProtocolo"></strong>
+        </div>
+        <button class="botao-icone" id="fecharDetalhe" type="button" aria-label="Fechar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+    </header>
+    <dl class="detalhe-dados" id="detalheDados"></dl>
+    <span class="detalhe-rotulo">Observação de abertura</span>
+    <p id="detalheObs"></p>
+</dialog>
+
+<div class="aviso-flutuante" id="avisoFlutuante" role="status" hidden></div>
+
+<script src="../JAVA/inteligencia.js" defer></script>
+</body>
+</html>
