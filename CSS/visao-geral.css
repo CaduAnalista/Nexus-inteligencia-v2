@@ -1,903 +1,118 @@
+/* NEXUS V2 — Complemento do menu Problemas-Setoriais
+   Adicione AO FINAL do CSS/visao-geral.css existente.
+   Não substitua as regras atuais da Visão Geral. */
 
-/* =====================================================
-   NEXUS V2 — VISÃO GERAL
-   Menu retrátil | Cabeçalho compacto | Dashboard
-   ===================================================== */
-
-:root {
-  --fundo: #0A0E1A;
-  --lateral: #101827;
-  --superficie: #131E30;
-  --superficie-hover: #192A3F;
-  --borda: #26364B;
-  --borda-destaque: #28516A;
-
-  --texto: #EAF3FF;
-  --texto-secundario: #91A6BF;
-  --texto-suave: #6F849D;
-
-  --ciano: #22D3F5;
-  --ciano-claro: #78E9FF;
-  --ciano-fundo: #15364A;
-
-  --verde: #41D9A6;
-  --vermelho: #FF8296;
-
-  --largura-menu: 255px;
-  --largura-menu-recolhido: 72px;
-
-  --duracao: 220ms;
-  --curva: cubic-bezier(.2, .7, .2, 1);
-}
-
-/* =====================================================
-   CONFIGURAÇÕES GERAIS
-   ===================================================== */
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  min-height: 100%;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--fundo);
-  color: var(--texto);
-  font-family: "Segoe UI", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: not-allowed;
-}
-
-[hidden] {
+/* Respeita o atributo hidden mesmo que .submenu tenha display definido */
+#submenuProblemasSetoriais[hidden] {
   display: none !important;
 }
 
-:focus-visible {
-  outline: 2px solid var(--ciano);
-  outline-offset: 3px;
-}
-
-/* =====================================================
-   ESTRUTURA DA APLICAÇÃO
-   ===================================================== */
-
-.aplicacao {
-  display: flex;
+.grupo-problemas {
   width: 100%;
-  min-height: 100vh;
-}
-
-.menu-lateral {
-  position: sticky;
-  top: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  flex-shrink: 0;
-
-  width: var(--largura-menu);
-  min-width: var(--largura-menu);
-
-  height: 100vh;
-  height: 100dvh;
-
-  padding: 58px 15px 20px;
-
-  background: var(--lateral);
-  border-right: 1px solid var(--borda);
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  scrollbar-width: thin;
-  scrollbar-color: #30465F transparent;
-
-  transition:
-    width var(--duracao) var(--curva),
-    min-width var(--duracao) var(--curva),
-    padding var(--duracao) var(--curva);
-}
-
-.conteudo {
-  flex: 1;
   min-width: 0;
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-
-  padding: 15px 24px;
-
-  background:
-    radial-gradient(
-      circle at 90% 0%,
-      rgba(34, 211, 245, .045),
-      transparent 35%
-    ),
-    var(--fundo);
+  margin-top: 4px;
 }
 
-/* =====================================================
-   BOTÃO DE ABRIR E FECHAR MENU
-   ===================================================== */
-
-.botao-recolher-menu {
-  position: absolute;
-  top: 15px;
-  right: 14px;
-  z-index: 10;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 30px;
-  height: 30px;
-
-  padding: 0;
-
-  background: #172B3F;
-  border: 1px solid #2A455C;
-  border-radius: 8px;
-
-  color: var(--ciano);
-
-  transition:
-    background 180ms ease,
-    border-color 180ms ease;
-}
-
-.botao-recolher-menu:hover {
-  background: #21455B;
-  border-color: var(--ciano);
-}
-
-.botao-recolher-menu svg {
-  width: 17px;
-  height: 17px;
-
-  transition:
-    transform var(--duracao) var(--curva);
-}
-
-/* =====================================================
-   MARCA NEXUS
-   ===================================================== */
-
-.marca {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 0 12px;
-  margin-bottom: 30px;
-
-  min-width: 0;
-}
-
-.marca-icone {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.marca-texto {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.marca-texto strong {
-  color: #FFFFFF;
-  font-size: 21px;
-  font-weight: 750;
-  letter-spacing: 2.5px;
-}
-
-.marca-texto span {
-  color: var(--texto-secundario);
-  font-size: 11px;
-  white-space: nowrap;
-}
-
-/* =====================================================
-   NAVEGAÇÃO
-   ===================================================== */
-
-.navegacao {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.menu-titulo {
-  margin: 0 12px 12px;
-
-  color: var(--texto-secundario);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.6px;
-}
-
-.grupo-menu {
+.menu-principal-problemas {
   width: 100%;
-}
-
-.menu-principal {
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 11px;
-
-  transition:
-    background var(--duracao),
-    border-color var(--duracao);
-}
-
-.menu-principal:hover {
-  background: var(--superficie-hover);
-}
-
-.menu-principal:has(.menu-item.ativo) {
-  background: var(--ciano-fundo);
-  border-color: var(--borda-destaque);
-}
-
-.menu-item {
-  flex: 1;
-  min-width: 0;
-
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  padding: 12px;
-
-  color: var(--texto-secundario);
-  background: transparent;
-  border: none;
-  border-radius: 10px;
-
-  text-align: left;
-  font-size: 13px;
-  font-weight: 500;
 }
 
-.menu-item:hover,
-.menu-item.ativo {
-  color: var(--ciano);
-}
-
-.menu-item-icone {
-  width: 16px;
-  text-align: center;
-  font-size: 17px;
-  color: var(--ciano);
-  flex-shrink: 0;
-}
-
-.menu-item-texto {
-  white-space: nowrap;
-}
-
-.menu-expandir {
-  width: 39px;
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  color: var(--texto-secundario);
-  background: transparent;
-  border: none;
-  border-radius: 9px;
-}
-
-.menu-expandir:hover {
-  color: var(--ciano-claro);
-  background: rgba(255, 255, 255, .045);
-}
-
-.menu-expandir svg {
-  width: 17px;
-  height: 17px;
-
-  transition:
-    transform var(--duracao) var(--curva);
-}
-
-.menu-expandir[aria-expanded="false"] svg {
-  transform: rotate(-90deg);
-}
-
-/* =====================================================
-   SUBMENU DOS DASHBOARDS
-   ===================================================== */
-
-.submenu {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  margin-top: 7px;
-  margin-left: 14px;
-  padding-left: 10px;
-
-  border-left: 1px solid #2A3B51;
-
-  max-height: 650px;
-  opacity: 1;
-  visibility: visible;
-
-  overflow: hidden;
-
-  transition:
-    max-height 260ms var(--curva),
-    opacity 180ms ease,
-    margin-top 260ms var(--curva),
-    visibility 260ms;
-}
-
-.submenu:not(.aberto) {
-  max-height: 0;
-  opacity: 0;
-  visibility: hidden;
-  margin-top: 0;
-  pointer-events: none;
-}
-
-.submenu-item {
+.menu-problemas-botao {
   display: flex;
   align-items: center;
   gap: 9px;
-
   width: 100%;
-  min-height: 38px;
-
-  padding: 10px 9px;
-
-  color: var(--texto-secundario);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 8px;
-
+  min-width: 0;
   text-align: left;
-  font-size: 12px;
-
-  transition:
-    color var(--duracao),
-    background var(--duracao),
-    border-color var(--duracao);
+  cursor: pointer;
+  border-radius: 9px;
+  transition: background-color .18s ease, color .18s ease;
 }
 
-.submenu-item:not(:disabled):hover {
-  color: #FFFFFF;
-  background: var(--superficie-hover);
+.menu-problemas-botao > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
 }
 
-.submenu-item.ativo {
-  color: var(--ciano);
-  background: rgba(34, 211, 245, .09);
-  border-color: rgba(34, 211, 245, .17);
+.menu-problemas-botao:hover,
+.menu-problemas-botao[aria-expanded="true"] {
+  background: rgba(62, 206, 235, .09);
+  color: #d9f7ff;
 }
 
-.submenu-icone {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 17px;
-  flex-shrink: 0;
-
-  color: var(--ciano);
-  font-size: 15px;
-}
-
-.submenu-item:disabled {
-  opacity: .55;
-}
-
-.menu-em-breve {
+.seta-problemas {
+  flex: none;
   margin-left: auto;
-  color: var(--texto-suave);
-  font-size: 9px;
-  white-space: nowrap;
-}
-
-/* =====================================================
-   RODAPÉ DO MENU
-   ===================================================== */
-
-.menu-rodape {
-  margin-top: auto;
-  padding: 20px 12px 0;
-
-  border-top: 1px solid var(--borda);
-}
-
-.usuario {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.usuario-nome {
-  color: #FFFFFF;
-  font-size: 13px;
-  font-weight: 650;
-}
-
-.usuario-email {
-  color: var(--texto-secundario);
-  font-size: 11px;
-  overflow-wrap: anywhere;
-}
-
-.botao-sair {
-  display: inline-block;
-  margin-top: 22px;
-
-  color: var(--vermelho);
-  font-size: 12px;
-  text-decoration: none;
-}
-
-.botao-sair:hover {
-  color: #FFB3C0;
-}
-
-/* =====================================================
-   MENU LATERAL RECOLHIDO
-   ===================================================== */
-
-.menu-lateral.recolhido {
-  width: var(--largura-menu-recolhido);
-  min-width: var(--largura-menu-recolhido);
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.menu-lateral.recolhido .botao-recolher-menu {
-  right: 20px;
-}
-
-.menu-lateral.recolhido .botao-recolher-menu svg {
-  transform: rotate(180deg);
-}
-
-.menu-lateral.recolhido .marca {
-  justify-content: center;
-  padding: 0;
-}
-
-.menu-lateral.recolhido .marca-icone {
-  width: 40px;
-  height: 40px;
-}
-
-.menu-lateral.recolhido .marca-texto,
-.menu-lateral.recolhido .menu-titulo,
-.menu-lateral.recolhido .menu-item-texto,
-.menu-lateral.recolhido .menu-expandir,
-.menu-lateral.recolhido .submenu,
-.menu-lateral.recolhido .usuario,
-.menu-lateral.recolhido .botao-sair {
-  display: none;
-}
-
-.menu-lateral.recolhido .menu-principal {
-  justify-content: center;
-}
-
-.menu-lateral.recolhido .menu-item {
-  justify-content: center;
-  padding: 12px 8px;
-}
-
-.menu-lateral.recolhido .menu-item-icone {
   font-size: 19px;
+  line-height: 1;
+  color: #82a6ba;
+  transition: transform .2s ease;
 }
 
-.menu-lateral.recolhido .menu-rodape {
-  padding: 0;
+.menu-problemas-botao[aria-expanded="true"] .seta-problemas {
+  transform: rotate(180deg);
+  color: #57d5ee;
 }
 
-/* =====================================================
-   CABEÇALHO COMPACTO
-   ===================================================== */
-
-.topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  min-height: 56px;
-
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--borda);
-}
-
-.topo-informacoes {
-  min-width: 0;
-}
-
-.topo-etiqueta {
-  margin: 0 0 4px;
-
-  color: var(--ciano);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-}
-
-.topo h1 {
-  margin: 0 0 3px;
-
-  color: var(--texto);
-  font-size: 21px;
-  font-weight: 650;
-  line-height: 1.2;
-}
-
-.topo-informacoes > p:last-child {
-  margin: 0;
-
-  color: var(--texto-secundario);
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.topo-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  color: #8DE6C5;
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-.status-indicador {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-
-  background: var(--verde);
-  box-shadow: 0 0 11px rgba(65, 217, 166, .55);
-}
-
-/* =====================================================
-   ÁREA DE CONTEÚDO
-   ===================================================== */
-
-.area-conteudo {
-  flex: 1;
-  min-width: 0;
-
+/* Segundo nível: dois links de Problemas-Setoriais */
+#submenuProblemasSetoriais {
   display: flex;
   flex-direction: column;
-
-  padding-top: 14px;
-}
-
-.pagina-inicial {
+  gap: 3px;
   width: 100%;
-  animation: surgir 260ms ease both;
+  padding: 4px 0 5px 12px;
+  margin: 1px 0 3px;
+  border-left: 1px solid rgba(74, 206, 234, .22);
 }
 
-/* BOAS-VINDAS */
-
-.boas-vindas {
-  padding: 26px;
-
-  background:
-    linear-gradient(
-      130deg,
-      #152A3F 0%,
-      #111A2B 100%
-    );
-
-  border: 1px solid var(--borda);
-  border-radius: 15px;
+#submenuProblemasSetoriais .submenu-item-problemas {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  color: #b8cbdd;
+  transition: background-color .18s ease, color .18s ease;
 }
 
-.boas-vindas-etiqueta {
-  display: inline-block;
-
-  color: var(--ciano);
-  font-size: 10px;
-  font-weight: 650;
-  letter-spacing: 2px;
+#submenuProblemasSetoriais .submenu-item-problemas:hover {
+  background: rgba(68, 211, 240, .08);
+  color: #e5faff;
 }
 
-.boas-vindas h2 {
-  margin: 12px 0;
-
-  font-size: 24px;
+#submenuProblemasSetoriais .submenu-item-problemas.ativo,
+#submenuProblemasSetoriais .submenu-item-problemas[aria-current="page"] {
+  background: rgba(63, 203, 235, .13);
+  color: #5cdef4;
   font-weight: 600;
 }
 
-.boas-vindas p {
-  margin: 0;
-  max-width: 660px;
-
-  color: var(--texto-secundario);
-  font-size: 13px;
-  line-height: 1.8;
+#submenuProblemasSetoriais .submenu-icone {
+  flex: 0 0 auto;
+  color: #54cfe8;
 }
 
-/* ESPAÇO FUTURO */
+/* Ao recolher a barra, ocultar somente os detalhes do submenu.
+   A classe .recolhido é a mesma usada no menu original. */
+.menu-lateral.recolhido #submenuProblemasSetoriais,
+.menu-lateral.recolhido .seta-problemas,
+.menu-lateral.recolhido .menu-problemas-botao > span:nth-child(2) {
+  display: none !important;
+}
 
-.area-futura {
-  display: flex;
-  align-items: center;
+.menu-lateral.recolhido .menu-problemas-botao {
   justify-content: center;
-
-  margin-top: 20px;
-  min-height: 240px;
-  padding: 26px;
-
-  border: 1px dashed #334960;
-  border-radius: 15px;
-
-  background: rgba(19, 30, 48, .3);
-  text-align: center;
 }
-
-.area-futura-conteudo {
-  max-width: 450px;
-}
-
-.area-futura-icone {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 52px;
-  height: 52px;
-
-  margin: 0 auto 16px;
-
-  color: var(--ciano);
-  background: rgba(34, 211, 245, .08);
-  border: 1px solid rgba(34, 211, 245, .2);
-  border-radius: 14px;
-
-  font-size: 24px;
-}
-
-.area-futura h3 {
-  margin: 0 0 12px;
-
-  font-size: 17px;
-  font-weight: 600;
-}
-
-.area-futura p {
-  margin: 0;
-
-  color: var(--texto-secundario);
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-/* =====================================================
-   DASHBOARD DINÂMICO
-   ===================================================== */
-
-.painel-dinamico {
-  position: relative;
-
-  flex: 1;
-  min-height: calc(100dvh - 115px);
-
-  width: 100%;
-
-  background: var(--fundo);
-  border: 1px solid var(--borda);
-  border-radius: 12px;
-
-  overflow: hidden;
-
-  animation: surgir 240ms ease both;
-}
-
-.iframe-dashboard {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-  min-height: calc(100dvh - 115px);
-
-  border: none;
-  background: var(--fundo);
-
-  opacity: 1;
-  transition: opacity 180ms ease;
-}
-
-.iframe-dashboard.trocando {
-  opacity: 0;
-}
-
-.painel-carregando {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  background: var(--fundo);
-  color: var(--texto-secundario);
-
-  font-size: 13px;
-}
-
-.carregando-circulo {
-  width: 19px;
-  height: 19px;
-
-  border: 2px solid rgba(34, 211, 245, .2);
-  border-top-color: var(--ciano);
-  border-radius: 50%;
-
-  animation: girar 700ms linear infinite;
-}
-
-/* =====================================================
-   ANIMAÇÕES
-   ===================================================== */
-
-@keyframes surgir {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes girar {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* =====================================================
-   RESPONSIVIDADE
-   ===================================================== */
-
-@media (max-width: 900px) {
-  :root {
-    --largura-menu: 225px;
-  }
-
-  .conteudo {
-    padding: 14px 18px;
-  }
-
-  .marca {
-    padding: 0 6px;
-  }
-
-  .marca-texto strong {
-    font-size: 19px;
-  }
-
-  .submenu-item {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 700px) {
-  .aplicacao {
-    flex-direction: column;
-  }
-
-  .menu-lateral,
-  .menu-lateral.recolhido {
-    position: relative;
-
-    width: 100%;
-    min-width: 0;
-
-    height: auto;
-    max-height: none;
-
-    padding: 54px 18px 18px;
-
-    border-right: none;
-    border-bottom: 1px solid var(--borda);
-
-    overflow: visible;
-  }
-
-  .menu-lateral.recolhido .marca {
-    justify-content: flex-start;
-  }
-
-  .menu-lateral.recolhido .menu-principal {
-    justify-content: flex-start;
-  }
-
-  .menu-lateral.recolhido .menu-item {
-    justify-content: flex-start;
-  }
-
-  .menu-lateral.recolhido .botao-recolher-menu {
-    right: 14px;
-  }
-
-  .conteudo {
-    padding: 14px;
-    min-height: 60vh;
-  }
-
-  .topo {
-    min-height: 50px;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .boas-vindas {
-    padding: 22px 18px;
-  }
-
-  .area-futura {
-    min-height: 210px;
-    padding: 20px;
-  }
-
-  .painel-dinamico,
-  .iframe-dashboard {
-    min-height: 500px;
-  }
-}
-
-/* =====================================================
-   ACESSIBILIDADE
-   ===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
-    scroll-behavior: auto !important;
+  .menu-problemas-botao,
+  .seta-problemas,
+  #submenuProblemasSetoriais .submenu-item-problemas {
+    transition: none;
   }
 }
