@@ -1,10 +1,8 @@
 
 /* =====================================================
    NEXUS V2 — VISÃO GERAL
-   Interface principal e navegação dinâmica
+   Menu retrátil | Cabeçalho compacto | Dashboard
    ===================================================== */
-
-/* CONFIGURAÇÕES GERAIS */
 
 :root {
   --fundo: #0A0E1A;
@@ -26,9 +24,15 @@
   --vermelho: #FF8296;
 
   --largura-menu: 255px;
+  --largura-menu-recolhido: 72px;
+
   --duracao: 220ms;
   --curva: cubic-bezier(.2, .7, .2, 1);
 }
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+   ===================================================== */
 
 * {
   box-sizing: border-box;
@@ -36,7 +40,6 @@
 
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -71,7 +74,7 @@ button:disabled {
 }
 
 /* =====================================================
-   ESTRUTURA PRINCIPAL
+   ESTRUTURA DA APLICAÇÃO
    ===================================================== */
 
 .aplicacao {
@@ -81,18 +84,21 @@ button:disabled {
 }
 
 .menu-lateral {
-  width: var(--largura-menu);
-  min-width: var(--largura-menu);
-  height: 100vh;
-  height: 100dvh;
-
   position: sticky;
   top: 0;
 
   display: flex;
   flex-direction: column;
 
-  padding: 28px 15px 20px;
+  flex-shrink: 0;
+
+  width: var(--largura-menu);
+  min-width: var(--largura-menu);
+
+  height: 100vh;
+  height: 100dvh;
+
+  padding: 58px 15px 20px;
 
   background: var(--lateral);
   border-right: 1px solid var(--borda);
@@ -102,6 +108,11 @@ button:disabled {
 
   scrollbar-width: thin;
   scrollbar-color: #30465F transparent;
+
+  transition:
+    width var(--duracao) var(--curva),
+    min-width var(--duracao) var(--curva),
+    padding var(--duracao) var(--curva);
 }
 
 .conteudo {
@@ -109,10 +120,10 @@ button:disabled {
   min-width: 0;
   min-height: 100vh;
 
-  padding: 30px 38px;
-
   display: flex;
   flex-direction: column;
+
+  padding: 15px 24px;
 
   background:
     radial-gradient(
@@ -124,7 +135,50 @@ button:disabled {
 }
 
 /* =====================================================
-   IDENTIDADE VISUAL
+   BOTÃO DE ABRIR E FECHAR MENU
+   ===================================================== */
+
+.botao-recolher-menu {
+  position: absolute;
+  top: 15px;
+  right: 14px;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  background: #172B3F;
+  border: 1px solid #2A455C;
+  border-radius: 8px;
+
+  color: var(--ciano);
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.botao-recolher-menu:hover {
+  background: #21455B;
+  border-color: var(--ciano);
+}
+
+.botao-recolher-menu svg {
+  width: 17px;
+  height: 17px;
+
+  transition:
+    transform var(--duracao) var(--curva);
+}
+
+/* =====================================================
+   MARCA NEXUS
    ===================================================== */
 
 .marca {
@@ -133,7 +187,9 @@ button:disabled {
   gap: 12px;
 
   padding: 0 12px;
-  margin-bottom: 38px;
+  margin-bottom: 30px;
+
+  min-width: 0;
 }
 
 .marca-icone {
@@ -151,36 +207,35 @@ button:disabled {
 }
 
 .marca-texto strong {
+  color: #FFFFFF;
   font-size: 21px;
   font-weight: 750;
   letter-spacing: 2.5px;
-  color: #FFFFFF;
 }
 
 .marca-texto span {
   color: var(--texto-secundario);
   font-size: 11px;
-  letter-spacing: .25px;
   white-space: nowrap;
 }
 
 /* =====================================================
-   MENU DE NAVEGAÇÃO
+   NAVEGAÇÃO
    ===================================================== */
 
 .navegacao {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 0;
 }
 
 .menu-titulo {
   margin: 0 12px 12px;
+
   color: var(--texto-secundario);
   font-size: 11px;
-  letter-spacing: 1.6px;
   font-weight: 500;
+  letter-spacing: 1.6px;
 }
 
 .grupo-menu {
@@ -197,8 +252,8 @@ button:disabled {
   border-radius: 11px;
 
   transition:
-    background var(--duracao) var(--curva),
-    border-color var(--duracao) var(--curva);
+    background var(--duracao),
+    border-color var(--duracao);
 }
 
 .menu-principal:hover {
@@ -218,7 +273,7 @@ button:disabled {
   align-items: center;
   gap: 12px;
 
-  padding: 13px 12px;
+  padding: 12px;
 
   color: var(--texto-secundario);
   background: transparent;
@@ -228,8 +283,6 @@ button:disabled {
   text-align: left;
   font-size: 13px;
   font-weight: 500;
-
-  transition: color var(--duracao);
 }
 
 .menu-item:hover,
@@ -240,7 +293,7 @@ button:disabled {
 .menu-item-icone {
   width: 16px;
   text-align: center;
-  font-size: 16px;
+  font-size: 17px;
   color: var(--ciano);
   flex-shrink: 0;
 }
@@ -263,10 +316,6 @@ button:disabled {
   background: transparent;
   border: none;
   border-radius: 9px;
-
-  transition:
-    color var(--duracao),
-    background var(--duracao);
 }
 
 .menu-expandir:hover {
@@ -287,7 +336,7 @@ button:disabled {
 }
 
 /* =====================================================
-   SUBMENU SUSPENSO
+   SUBMENU DOS DASHBOARDS
    ===================================================== */
 
 .submenu {
@@ -359,8 +408,8 @@ button:disabled {
 
 .submenu-icone {
   display: inline-flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   width: 17px;
   flex-shrink: 0;
@@ -375,9 +424,8 @@ button:disabled {
 
 .menu-em-breve {
   margin-left: auto;
-
-  font-size: 9px;
   color: var(--texto-suave);
+  font-size: 9px;
   white-space: nowrap;
 }
 
@@ -399,14 +447,14 @@ button:disabled {
 }
 
 .usuario-nome {
+  color: #FFFFFF;
   font-size: 13px;
   font-weight: 650;
-  color: #FFFFFF;
 }
 
 .usuario-email {
-  font-size: 11px;
   color: var(--texto-secundario);
+  font-size: 11px;
   overflow-wrap: anywhere;
 }
 
@@ -417,8 +465,6 @@ button:disabled {
   color: var(--vermelho);
   font-size: 12px;
   text-decoration: none;
-
-  transition: color var(--duracao);
 }
 
 .botao-sair:hover {
@@ -426,16 +472,75 @@ button:disabled {
 }
 
 /* =====================================================
-   CABEÇALHO PRINCIPAL
+   MENU LATERAL RECOLHIDO
+   ===================================================== */
+
+.menu-lateral.recolhido {
+  width: var(--largura-menu-recolhido);
+  min-width: var(--largura-menu-recolhido);
+
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.menu-lateral.recolhido .botao-recolher-menu {
+  right: 20px;
+}
+
+.menu-lateral.recolhido .botao-recolher-menu svg {
+  transform: rotate(180deg);
+}
+
+.menu-lateral.recolhido .marca {
+  justify-content: center;
+  padding: 0;
+}
+
+.menu-lateral.recolhido .marca-icone {
+  width: 40px;
+  height: 40px;
+}
+
+.menu-lateral.recolhido .marca-texto,
+.menu-lateral.recolhido .menu-titulo,
+.menu-lateral.recolhido .menu-item-texto,
+.menu-lateral.recolhido .menu-expandir,
+.menu-lateral.recolhido .submenu,
+.menu-lateral.recolhido .usuario,
+.menu-lateral.recolhido .botao-sair {
+  display: none;
+}
+
+.menu-lateral.recolhido .menu-principal {
+  justify-content: center;
+}
+
+.menu-lateral.recolhido .menu-item {
+  justify-content: center;
+  padding: 12px 8px;
+}
+
+.menu-lateral.recolhido .menu-item-icone {
+  font-size: 19px;
+}
+
+.menu-lateral.recolhido .menu-rodape {
+  padding: 0;
+}
+
+/* =====================================================
+   CABEÇALHO COMPACTO
    ===================================================== */
 
 .topo {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px;
+  gap: 12px;
 
-  padding-bottom: 26px;
+  min-height: 56px;
+
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--borda);
 }
 
@@ -444,37 +549,38 @@ button:disabled {
 }
 
 .topo-etiqueta {
-  margin: 0 0 10px;
+  margin: 0 0 4px;
 
   color: var(--ciano);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 1.7px;
+  letter-spacing: 1.4px;
 }
 
 .topo h1 {
-  margin: 0 0 9px;
+  margin: 0 0 3px;
 
   color: var(--texto);
-  font-size: clamp(23px, 2.5vw, 30px);
+  font-size: 21px;
   font-weight: 650;
-  letter-spacing: -.5px;
+  line-height: 1.2;
 }
 
 .topo-informacoes > p:last-child {
   margin: 0;
+
   color: var(--texto-secundario);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 11px;
+  line-height: 1.35;
 }
 
 .topo-status {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 
   color: #8DE6C5;
-  font-size: 11px;
+  font-size: 10px;
   white-space: nowrap;
 }
 
@@ -498,17 +604,18 @@ button:disabled {
   display: flex;
   flex-direction: column;
 
-  padding-top: 25px;
+  padding-top: 14px;
 }
 
 .pagina-inicial {
   width: 100%;
-
   animation: surgir 260ms ease both;
 }
 
+/* BOAS-VINDAS */
+
 .boas-vindas {
-  padding: 30px;
+  padding: 26px;
 
   background:
     linear-gradient(
@@ -518,7 +625,7 @@ button:disabled {
     );
 
   border: 1px solid var(--borda);
-  border-radius: 16px;
+  border-radius: 15px;
 }
 
 .boas-vindas-etiqueta {
@@ -531,9 +638,9 @@ button:disabled {
 }
 
 .boas-vindas h2 {
-  margin: 14px 0 12px;
+  margin: 12px 0;
 
-  font-size: clamp(21px, 2.5vw, 27px);
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -546,20 +653,21 @@ button:disabled {
   line-height: 1.8;
 }
 
+/* ESPAÇO FUTURO */
+
 .area-futura {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-top: 24px;
-  min-height: 260px;
-  padding: 30px;
+  margin-top: 20px;
+  min-height: 240px;
+  padding: 26px;
 
   border: 1px dashed #334960;
-  border-radius: 16px;
+  border-radius: 15px;
 
   background: rgba(19, 30, 48, .3);
-
   text-align: center;
 }
 
@@ -572,17 +680,17 @@ button:disabled {
   align-items: center;
   justify-content: center;
 
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
 
-  margin: 0 auto 17px;
+  margin: 0 auto 16px;
 
   color: var(--ciano);
   background: rgba(34, 211, 245, .08);
   border: 1px solid rgba(34, 211, 245, .2);
-  border-radius: 15px;
+  border-radius: 14px;
 
-  font-size: 25px;
+  font-size: 24px;
 }
 
 .area-futura h3 {
@@ -601,20 +709,20 @@ button:disabled {
 }
 
 /* =====================================================
-   PAINEL DINÂMICO
+   DASHBOARD DINÂMICO
    ===================================================== */
 
 .painel-dinamico {
   position: relative;
 
   flex: 1;
-  min-height: 520px;
+  min-height: calc(100dvh - 115px);
 
   width: 100%;
 
   background: var(--fundo);
   border: 1px solid var(--borda);
-  border-radius: 14px;
+  border-radius: 12px;
 
   overflow: hidden;
 
@@ -626,13 +734,12 @@ button:disabled {
 
   width: 100%;
   height: 100%;
-  min-height: 520px;
+  min-height: calc(100dvh - 115px);
 
   border: none;
   background: var(--fundo);
 
   opacity: 1;
-
   transition: opacity 180ms ease;
 }
 
@@ -699,7 +806,7 @@ button:disabled {
   }
 
   .conteudo {
-    padding: 26px 24px;
+    padding: 14px 18px;
   }
 
   .marca {
@@ -720,15 +827,17 @@ button:disabled {
     flex-direction: column;
   }
 
-  .menu-lateral {
+  .menu-lateral,
+  .menu-lateral.recolhido {
     position: relative;
 
     width: 100%;
     min-width: 0;
+
     height: auto;
     max-height: none;
 
-    padding: 18px;
+    padding: 54px 18px 18px;
 
     border-right: none;
     border-bottom: 1px solid var(--borda);
@@ -736,51 +845,44 @@ button:disabled {
     overflow: visible;
   }
 
-  .marca {
-    margin-bottom: 12px;
+  .menu-lateral.recolhido .marca {
+    justify-content: flex-start;
   }
 
-  .navegacao {
-    gap: 8px;
+  .menu-lateral.recolhido .menu-principal {
+    justify-content: flex-start;
   }
 
-  .submenu {
-    max-height: 650px;
+  .menu-lateral.recolhido .menu-item {
+    justify-content: flex-start;
   }
 
-  .menu-rodape {
-    margin-top: 15px;
-    padding-top: 15px;
-  }
-
-  .botao-sair {
-    margin-top: 12px;
+  .menu-lateral.recolhido .botao-recolher-menu {
+    right: 14px;
   }
 
   .conteudo {
-    padding: 24px 16px;
+    padding: 14px;
     min-height: 60vh;
   }
 
   .topo {
-    flex-direction: column;
+    min-height: 50px;
     align-items: flex-start;
-    gap: 15px;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .boas-vindas {
-    padding: 24px 20px;
+    padding: 22px 18px;
   }
 
   .area-futura {
-    min-height: 220px;
-    padding: 22px;
+    min-height: 210px;
+    padding: 20px;
   }
 
-  .painel-dinamico {
-    min-height: 500px;
-  }
-
+  .painel-dinamico,
   .iframe-dashboard {
     min-height: 500px;
   }
