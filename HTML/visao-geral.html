@@ -1,364 +1,372 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <meta name="theme-color" content="#0A0E1A">
   <meta name="robots" content="noindex, nofollow">
 
   <title>NEXUS | Visão Geral</title>
 
-  <link rel="icon" type="image/png" href="../ASSETS/nexus-icone-64.png">
+  <link
+    rel="icon"
+    type="image/png"
+    href="../ASSETS/nexus-icone-64.png"
+  >
 
-  <style>
-    :root {
-      --fundo: #0A0E1A;
-      --lateral: #101827;
-      --cartao: #131E30;
-      --borda: #26364B;
-      --texto: #EAF3FF;
-      --secundario: #8FA5BE;
-      --destaque: #00D9F5;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--fundo);
-      color: var(--texto);
-      font-family: "Segoe UI", Arial, sans-serif;
-    }
-
-    .aplicacao {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    .menu-lateral {
-      width: 255px;
-      background: var(--lateral);
-      border-right: 1px solid var(--borda);
-      padding: 26px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .marca {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 12px;
-    }
-
-    .marca img {
-      width: 42px;
-      height: 42px;
-    }
-
-    .marca strong {
-      display: block;
-      font-size: 22px;
-      letter-spacing: 2px;
-    }
-
-    .marca small {
-      color: var(--secundario);
-      font-size: 11px;
-    }
-
-    .menu-titulo {
-      margin: 0 12px 12px;
-      color: var(--secundario);
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .navegacao {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .navegacao a {
-      display: block;
-      padding: 13px 15px;
-      border-radius: 10px;
-      color: var(--secundario);
-      text-decoration: none;
-      font-size: 13px;
-      transition: 0.2s;
-    }
-
-    .navegacao a:hover {
-      background: #1B2B40;
-      color: white;
-    }
-
-    .navegacao a.ativo {
-      background: #123548;
-      color: var(--destaque);
-      border: 1px solid #22516A;
-    }
-
-    .menu-rodape {
-      margin-top: auto;
-      border-top: 1px solid var(--borda);
-      padding: 18px 12px 0;
-    }
-
-    .usuario {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .usuario-email {
-      display: block;
-      color: var(--secundario);
-      font-size: 11px;
-      margin-top: 5px;
-      overflow-wrap: anywhere;
-    }
-
-    .sair {
-      display: inline-block;
-      margin-top: 20px;
-      color: #FF9CA7;
-      text-decoration: none;
-      font-size: 12px;
-    }
-
-    .conteudo {
-      flex: 1;
-      min-width: 0;
-      padding: 32px 40px;
-    }
-
-    .topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      border-bottom: 1px solid var(--borda);
-      padding-bottom: 25px;
-    }
-
-    .topo h1 {
-      margin: 0 0 8px;
-      font-size: 27px;
-      font-weight: 600;
-    }
-
-    .topo p {
-      margin: 0;
-      color: var(--secundario);
-      font-size: 13px;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #80E8C5;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .status::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #40DDA8;
-      box-shadow: 0 0 10px #40DDA8;
-    }
-
-    .boas-vindas {
-      margin-top: 35px;
-      padding: 30px;
-      border: 1px solid var(--borda);
-      border-radius: 16px;
-      background: linear-gradient(
-        135deg,
-        #14283C,
-        #111A2A
-      );
-    }
-
-    .boas-vindas .etiqueta {
-      color: var(--destaque);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .boas-vindas h2 {
-      margin: 12px 0;
-      font-size: 24px;
-      font-weight: 600;
-    }
-
-    .boas-vindas p {
-      max-width: 620px;
-      color: var(--secundario);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .area-futura {
-      margin-top: 24px;
-      min-height: 250px;
-      border: 1px dashed #344A62;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
-      text-align: center;
-    }
-
-    .area-futura h3 {
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 0 12px;
-    }
-
-    .area-futura p {
-      color: var(--secundario);
-      font-size: 13px;
-      line-height: 1.6;
-      max-width: 420px;
-      margin: auto;
-    }
-
-    @media (max-width: 760px) {
-      .aplicacao {
-        flex-direction: column;
-      }
-
-      .menu-lateral {
-        width: 100%;
-        gap: 18px;
-      }
-
-      .navegacao {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .menu-rodape {
-        margin-top: 0;
-      }
-
-      .conteudo {
-        padding: 24px 18px;
-      }
-
-      .topo {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .boas-vindas {
-        padding: 22px;
-      }
-    }
-  </style>
+  <!-- CSS DA VISÃO GERAL -->
+  <link
+    rel="stylesheet"
+    href="../CSS/visao-geral.css"
+  >
 </head>
 
 <body>
 
-  <div class="aplicacao">
+  <div class="aplicacao" id="aplicacao">
 
-    <!-- MENU LATERAL -->
-    <aside class="menu-lateral">
+    <!-- ==================================
+         MENU LATERAL FIXO
+    =================================== -->
+
+    <aside class="menu-lateral" id="menuLateral">
+
+      <!-- MARCA NEXUS -->
 
       <div class="marca">
         <img
           src="../ASSETS/nexus-icone-64.png"
-          alt="Ícone NEXUS"
+          alt="Ícone do NEXUS"
+          class="marca-icone"
+          width="44"
+          height="44"
         >
-        <div>
+
+        <div class="marca-texto">
           <strong>NEXUS</strong>
-          <small>Inteligência de Dados</small>
+          <span>Inteligência de Dados</span>
         </div>
       </div>
 
-      <nav class="navegacao" aria-label="Menu principal">
+      <!-- NAVEGAÇÃO -->
 
-        <p class="menu-titulo">Navegação</p>
+      <nav
+        class="navegacao"
+        aria-label="Navegação principal"
+      >
 
-        <a href="./visao-geral.html" class="ativo" aria-current="page">
-          ◈ &nbsp; Visão Geral
-        </a>
+        <p class="menu-titulo">NAVEGAÇÃO</p>
 
-        <a href="./inteligencia.html">
-          ◉ &nbsp; Inteligência de Rede
-        </a>
+        <!-- VISÃO GERAL / MENU EXPANSÍVEL -->
+
+        <div class="grupo-menu" id="grupoVisaoGeral">
+
+          <div class="menu-principal">
+
+            <button
+              type="button"
+              class="menu-item ativo"
+              id="botaoVisaoGeral"
+              data-pagina="visao-geral"
+              aria-current="page"
+            >
+              <span class="menu-item-icone">◈</span>
+              <span class="menu-item-texto">
+                Visão Geral
+              </span>
+            </button>
+
+            <button
+              type="button"
+              class="menu-expandir"
+              id="botaoExpandirMenu"
+              aria-label="Expandir ou recolher dashboards"
+              aria-expanded="true"
+              aria-controls="submenuDashboards"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="m6 9 6 6 6-6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+
+          </div>
+
+          <!-- SUBMENU DOS DASHBOARDS -->
+
+          <div
+            class="submenu aberto"
+            id="submenuDashboards"
+          >
+
+            <!-- INTELIGÊNCIA DE REDE -->
+
+            <button
+              type="button"
+              class="submenu-item"
+              data-pagina="inteligencia"
+              data-url="./inteligencia.html"
+            >
+              <span class="submenu-icone">◎</span>
+              <span>Inteligência de Rede</span>
+            </button>
+
+            <!-- SAÚDE E SOCIAL -->
+
+            <button
+              type="button"
+              class="submenu-item"
+              data-pagina="saude-social"
+              data-url=""
+              disabled
+              title="Página ainda não conectada"
+            >
+              <span class="submenu-icone">♡</span>
+              <span>Saúde e Social</span>
+              <span class="menu-em-breve">Em breve</span>
+            </button>
+
+            <!-- CAPTAÇÃO / CADASTRO -->
+
+            <button
+              type="button"
+              class="submenu-item"
+              data-pagina="captacao-cadastro"
+              data-url=""
+              disabled
+              title="Página ainda não conectada"
+            >
+              <span class="submenu-icone">♧</span>
+              <span>Captação / Cadastro</span>
+              <span class="menu-em-breve">Em breve</span>
+            </button>
+
+            <!-- FINANCEIRO / CREDENCIAMENTO -->
+
+            <button
+              type="button"
+              class="submenu-item"
+              data-pagina="financeiro-credenciamento"
+              data-url=""
+              disabled
+              title="Página ainda não conectada"
+            >
+              <span class="submenu-icone">◇</span>
+              <span>Financeiro / Credenciamento</span>
+              <span class="menu-em-breve">Em breve</span>
+            </button>
+
+            <!-- CRM / ATENDIMENTO -->
+
+            <button
+              type="button"
+              class="submenu-item"
+              data-pagina="crm"
+              data-url=""
+              disabled
+              title="Página ainda não conectada"
+            >
+              <span class="submenu-icone">▤</span>
+              <span>CRM / Atendimento</span>
+              <span class="menu-em-breve">Em breve</span>
+            </button>
+
+            <!-- NIP -->
+
+            <button
+              type="button"
+              class="submenu-item"
+              data-pagina="nip"
+              data-url=""
+              disabled
+              title="Página ainda não conectada"
+            >
+              <span class="submenu-icone">◉</span>
+              <span>NIP</span>
+              <span class="menu-em-breve">Em breve</span>
+            </button>
+
+          </div>
+
+        </div>
 
       </nav>
 
+      <!-- RODAPÉ DO MENU -->
+
       <div class="menu-rodape">
-        <div class="usuario">Teste</div>
 
-        <span class="usuario-email">
-          teste@corporativo.com
-        </span>
+        <div class="usuario">
+          <span class="usuario-nome">Teste</span>
 
-        <a class="sair" href="./login.html">
+          <span class="usuario-email">
+            teste@corporativo.com
+          </span>
+        </div>
+
+        <a
+          href="./login.html"
+          class="botao-sair"
+          id="botaoSair"
+        >
           Sair do NEXUS
         </a>
+
       </div>
 
     </aside>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="conteudo">
+    <!-- ==================================
+         ÁREA PRINCIPAL
+    =================================== -->
 
-      <header class="topo">
-        <div>
-          <h1>Visão Geral</h1>
-          <p>Central de Inteligência e Gestão Integrada</p>
+    <main class="conteudo" id="conteudoPrincipal">
+
+      <!-- CABEÇALHO -->
+
+      <header class="topo" id="topoPrincipal">
+
+        <div class="topo-informacoes">
+
+          <p class="topo-etiqueta">
+            NEXUS / CENTRAL DE INTELIGÊNCIA
+          </p>
+
+          <h1 id="tituloPagina">
+            Visão Geral
+          </h1>
+
+          <p id="subtituloPagina">
+            Central de Inteligência e Gestão Integrada
+          </p>
+
         </div>
 
-        <span class="status">
-          Ambiente demonstrativo
-        </span>
+        <div class="topo-status">
+
+          <span class="status-indicador"></span>
+
+          <span>
+            Ambiente demonstrativo
+          </span>
+
+        </div>
+
       </header>
 
-      <section class="boas-vindas">
+      <!-- ==================================
+           CONTEÚDO DINÂMICO
+      =================================== -->
 
-        <span class="etiqueta">
-          Bem-vindo ao NEXUS
-        </span>
+      <section
+        class="area-conteudo"
+        id="areaConteudo"
+        aria-label="Conteúdo do painel selecionado"
+      >
 
-        <h2>Olá, Teste!</h2>
+        <!-- TELA INICIAL DA VISÃO GERAL -->
 
-        <p>
-          Este é o ambiente central da plataforma NEXUS.
-          Aqui serão reunidos os principais indicadores,
-          análises e informações gerenciais dos diferentes
-          setores, permitindo uma visão integrada da operação.
-        </p>
+        <div
+          class="pagina-inicial"
+          id="paginaInicial"
+        >
 
-      </section>
+          <section class="boas-vindas">
 
-      <section class="area-futura">
+            <span class="boas-vindas-etiqueta">
+              BEM-VINDO AO NEXUS
+            </span>
 
-        <div>
-          <h3>Espaço reservado para os indicadores</h3>
+            <h2>
+              Olá, Teste!
+            </h2>
 
-          <p>
-            Em breve, esta área receberá os dashboards
-            consolidados, gráficos gerenciais e alertas
-            estratégicos da plataforma.
-          </p>
+            <p>
+              Este é o ambiente central da plataforma NEXUS.
+              Utilize o menu lateral para navegar entre os
+              dashboards e explorar os recursos disponíveis.
+            </p>
+
+          </section>
+
+          <!-- ESPAÇO FUTURO -->
+
+          <section class="area-futura">
+
+            <div class="area-futura-conteudo">
+
+              <div class="area-futura-icone">
+                ◈
+              </div>
+
+              <h3>
+                Visão Geral em desenvolvimento
+              </h3>
+
+              <p>
+                Este espaço será utilizado futuramente
+                para reunir indicadores estratégicos,
+                análises gerenciais e alertas dos
+                diferentes setores.
+              </p>
+
+            </div>
+
+          </section>
+
+        </div>
+
+        <!-- ==================================
+             VISUALIZADOR DE DASHBOARDS
+        =================================== -->
+
+        <div
+          class="painel-dinamico"
+          id="painelDinamico"
+          hidden
+        >
+
+          <!-- INDICADOR DE CARREGAMENTO -->
+
+          <div
+            class="painel-carregando"
+            id="painelCarregando"
+            role="status"
+            aria-live="polite"
+            hidden
+          >
+            <span class="carregando-circulo"></span>
+
+            <span>
+              Carregando dashboard...
+            </span>
+          </div>
+
+          <!-- IFRAME -->
+
+          <iframe
+            id="iframeDashboard"
+            class="iframe-dashboard"
+            title="Dashboard NEXUS"
+            loading="eager"
+          ></iframe>
+
         </div>
 
       </section>
@@ -366,6 +374,10 @@
     </main>
 
   </div>
+
+  <!-- JAVASCRIPT DA VISÃO GERAL -->
+
+  <script src="../JAVA/visao-geral.js"></script>
 
 </body>
 </html>
