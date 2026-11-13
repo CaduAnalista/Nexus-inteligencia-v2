@@ -1,0 +1,50 @@
+/* NEXUS V2 | Problemas-Setoriais — Assuntos por setor
+   O menu lateral é responsabilidade da Visão Geral. */
+:root{color-scheme:dark;--fundo:#07172e;--painel:#0b2444;--painel-2:#12365d;--borda:#2c628f;--texto:#f3f8ff;--secundario:#b6cbe4;--ciano:#08c9f2;--verde:#0d946a;--verde-2:#06684f;--verde-borda:#33e6a5;--foco:#65dfff}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--fundo)}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 100% 0%,#123d71 0%,transparent 45%),linear-gradient(145deg,#07172e,#081f3d 72%,#06152c);font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--texto)}
+button,input{font:inherit}
+button:focus-visible,input:focus-visible{outline:3px solid var(--foco);outline-offset:3px}
+.pagina-assuntos{width:100%;max-width:1800px;margin:0 auto;padding:22px clamp(14px,2.2vw,34px) 44px}
+.cabecalho-pagina{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}
+.sobretitulo{display:block;color:var(--ciano);font-size:11px;font-weight:750;letter-spacing:.17em;margin-bottom:6px}
+.cabecalho-pagina h1{margin:0;font-size:clamp(27px,2.4vw,37px);line-height:1.15;letter-spacing:-.03em}
+.cabecalho-pagina p{margin:8px 0 0;color:var(--secundario);font-size:14px}
+.etiqueta-reuniao{flex-shrink:0;padding:11px 16px;border:1px solid #1a9fcb;border-radius:999px;color:#d5f5ff;background:#0c3155;font-size:13px;font-weight:600}
+.barra-ferramentas{display:grid;grid-template-columns:minmax(190px,240px) minmax(200px,1fr) auto;gap:14px;align-items:end;padding:17px 19px;border:1px solid #245985;border-radius:17px;background:rgba(12,42,78,.86);margin-bottom:14px}
+.campo-data,.campo-busca{display:flex;flex-direction:column;gap:7px;color:#c8ddf4;font-size:13px;font-weight:650}
+.campo-data input,.campo-busca input{width:100%;height:46px;border:1px solid #4676a4;border-radius:10px;padding:0 13px;background:#122f54;color:var(--texto);outline:none}
+.campo-data input:focus,.campo-busca input:focus{border-color:var(--ciano);box-shadow:0 0 0 3px #00d4ff24}
+.campo-busca input::placeholder{color:#a0b6d0}
+.campo-data input::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
+.botao-atualizar{min-height:46px;padding:0 23px;border:1px solid #4f8cc1;border-radius:12px;background:#174473;color:#fff;font-weight:700;cursor:pointer;transition:background .2s,transform .2s}
+.botao-atualizar:hover{background:#21609c;transform:translateY(-1px)}
+.aviso-informativo{margin:0 0 17px;padding:13px 18px;border:1px solid #1e6ba8;border-radius:13px;background:linear-gradient(90deg,#0e3564,#145391);color:#e5f3ff;font-size:14px;line-height:1.5}
+.grade-setores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+.cartao-setor{position:relative;min-width:0;min-height:185px;padding:23px 27px 25px;border:1px solid #3a8fca;border-left:5px solid var(--ciano);border-radius:18px;background:linear-gradient(130deg,#10416c,#0b2b50 72%);box-shadow:inset 0 1px 0 #ffffff16,0 9px 22px #0000001c;transition:background .2s,border-color .2s,opacity .2s}
+.cartao-cabecalho{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:13px}
+.cartao-cabecalho h2{margin:0;color:#f5faff;font-size:24px;font-weight:750;line-height:1.25;overflow-wrap:anywhere}
+.cartao-acoes{display:flex;align-items:center;justify-content:flex-end;flex-shrink:0;min-width:34px;min-height:34px}
+/* Botões de conclusão inseridos pelo JS podem usar estas classes. */
+.cartao-acoes button,.botao-concluir,.check-concluir{display:grid;place-items:center;width:39px;height:39px;border:1px solid #4f9dca;border-radius:50%;background:#0d355a;color:#d9f8ff;cursor:pointer;transition:transform .18s,background .18s}
+.cartao-acoes button:hover,.botao-concluir:hover,.check-concluir:hover{transform:scale(1.06);background:#165889}
+.cartao-acoes button[aria-pressed="true"],.cartao-acoes button[aria-checked="true"]{background:#0b9c4b;border-color:#58f5a1;color:white}
+.lista-assuntos{display:flex;flex-direction:column;gap:11px;margin:0;padding:0;list-style:none}
+.lista-assuntos li{position:relative;padding-left:29px;color:#f2f8ff;font-size:22px;font-weight:500;line-height:1.4;overflow-wrap:anywhere}
+.lista-assuntos li::before{content:"";position:absolute;left:1px;top:.55em;width:12px;height:12px;border-radius:50%;background:var(--ciano);box-shadow:0 0 10px #00cfff42}
+.mensagem-vazia{display:none;margin:22px 0 0;text-align:center;color:#b2c8e3;font-size:17px}
+/* Setor sem assuntos: permanece no lugar, com transparência. */
+.cartao-setor.sem-assuntos{opacity:.43;border-left-color:#7897b4;border-color:#52769b;background:linear-gradient(135deg,#1a3658,#122a4a);box-shadow:none}
+.cartao-setor.sem-assuntos .mensagem-vazia{display:block}
+.cartao-setor.sem-assuntos .lista-assuntos{display:none}
+.cartao-setor.sem-assuntos .cartao-acoes{display:none}
+/* Concluído: somente tons verdes, nunca azul/ciano. */
+.cartao-setor.concluido,.cartao-setor.concluído,.cartao-setor.finalizado,.cartao-setor[data-status="concluido"],.cartao-setor[data-concluido="true"]{opacity:1;background:linear-gradient(125deg,#0b785b 0%,#098d65 55%,#075c47 100%);border-color:var(--verde-borda);border-left-color:#48f3a7;box-shadow:inset 0 1px 0 #ffffff23,0 0 0 1px #25e49d2e,0 9px 23px #003c2b33}
+.cartao-setor.concluido .lista-assuntos li::before,.cartao-setor.concluído .lista-assuntos li::before,.cartao-setor.finalizado .lista-assuntos li::before,.cartao-setor[data-status="concluido"] .lista-assuntos li::before,.cartao-setor[data-concluido="true"] .lista-assuntos li::before{background:#a4ffd3;box-shadow:none}
+.cartao-setor.concluido .cartao-acoes button,.cartao-setor.concluído .cartao-acoes button,.cartao-setor.finalizado .cartao-acoes button,.cartao-setor[data-status="concluido"] .cartao-acoes button,.cartao-setor[data-concluido="true"] .cartao-acoes button{background:#10a855;border-color:#77ffb5;color:#fff}
+/* Suporte a itens marcados individualmente, sem alterar o cartão inteiro antes da conclusão total. */
+.lista-assuntos li.concluido,.lista-assuntos li.concluído{color:#c7ffdf}
+@media(max-width:1000px){.grade-setores{grid-template-columns:1fr}.cartao-setor{min-height:165px}}
+@media(max-width:650px){.pagina-assuntos{padding:16px 12px 30px}.cabecalho-pagina{align-items:flex-start;flex-direction:column}.barra-ferramentas{grid-template-columns:1fr;padding:14px}.botao-atualizar{width:100%}.cartao-setor{padding:20px;min-height:150px}.cartao-cabecalho h2{font-size:24px}.lista-assuntos li{font-size:22px}.etiqueta-reuniao{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
