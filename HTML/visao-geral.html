@@ -21,7 +21,7 @@
     href="../ASSETS/nexus-icone-64.png"
   >
 
-  <!-- CSS DA VISÃO GERAL -->
+  <!-- ESTILOS DA VISÃO GERAL -->
   <link
     rel="stylesheet"
     href="../CSS/visao-geral.css"
@@ -30,17 +30,54 @@
 
 <body>
 
+  <!-- =========================================
+       APLICAÇÃO NEXUS
+  ========================================== -->
+
   <div class="aplicacao" id="aplicacao">
 
-    <!-- ==================================
-         MENU LATERAL FIXO
-    =================================== -->
+    <!-- =========================================
+         MENU LATERAL
+    ========================================== -->
 
-    <aside class="menu-lateral" id="menuLateral">
+    <aside
+      class="menu-lateral"
+      id="menuLateral"
+      aria-label="Menu lateral do NEXUS"
+    >
 
-      <!-- MARCA NEXUS -->
+      <!-- BOTÃO PARA RECOLHER / EXPANDIR MENU -->
+
+      <button
+        type="button"
+        class="botao-recolher-menu"
+        id="botaoRecolherMenu"
+        aria-label="Recolher menu lateral"
+        aria-expanded="true"
+        aria-controls="menuLateral"
+        title="Recolher menu"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="m14 6-6 6 6 6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <!-- =========================================
+           IDENTIDADE VISUAL NEXUS
+      ========================================== -->
 
       <div class="marca">
+
         <img
           src="../ASSETS/nexus-icone-64.png"
           alt="Ícone do NEXUS"
@@ -53,22 +90,32 @@
           <strong>NEXUS</strong>
           <span>Inteligência de Dados</span>
         </div>
+
       </div>
 
-      <!-- NAVEGAÇÃO -->
+      <!-- =========================================
+           NAVEGAÇÃO PRINCIPAL
+      ========================================== -->
 
       <nav
         class="navegacao"
         aria-label="Navegação principal"
       >
 
-        <p class="menu-titulo">NAVEGAÇÃO</p>
+        <p class="menu-titulo">
+          NAVEGAÇÃO
+        </p>
 
-        <!-- VISÃO GERAL / MENU EXPANSÍVEL -->
+        <!-- VISÃO GERAL COM SUBMENU -->
 
-        <div class="grupo-menu" id="grupoVisaoGeral">
+        <div
+          class="grupo-menu"
+          id="grupoVisaoGeral"
+        >
 
           <div class="menu-principal">
+
+            <!-- BOTÃO VISÃO GERAL -->
 
             <button
               type="button"
@@ -76,21 +123,34 @@
               id="botaoVisaoGeral"
               data-pagina="visao-geral"
               aria-current="page"
+              title="Visão Geral"
             >
-              <span class="menu-item-icone">◈</span>
+
+              <span
+                class="menu-item-icone"
+                aria-hidden="true"
+              >
+                ◈
+              </span>
+
               <span class="menu-item-texto">
                 Visão Geral
               </span>
+
             </button>
+
+            <!-- SETA PARA EXPANDIR SUBMENU -->
 
             <button
               type="button"
               class="menu-expandir"
               id="botaoExpandirMenu"
-              aria-label="Expandir ou recolher dashboards"
+              aria-label="Recolher dashboards"
               aria-expanded="true"
               aria-controls="submenuDashboards"
+              title="Expandir ou recolher dashboards"
             >
+
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -104,11 +164,14 @@
                   stroke-linejoin="round"
                 />
               </svg>
+
             </button>
 
           </div>
 
-          <!-- SUBMENU DOS DASHBOARDS -->
+          <!-- =========================================
+               SUBMENU DOS DASHBOARDS
+          ========================================== -->
 
           <div
             class="submenu aberto"
@@ -122,9 +185,20 @@
               class="submenu-item"
               data-pagina="inteligencia"
               data-url="./inteligencia.html"
+              title="Abrir Inteligência de Rede"
             >
-              <span class="submenu-icone">◎</span>
-              <span>Inteligência de Rede</span>
+
+              <span
+                class="submenu-icone"
+                aria-hidden="true"
+              >
+                ◎
+              </span>
+
+              <span>
+                Inteligência de Rede
+              </span>
+
             </button>
 
             <!-- SAÚDE E SOCIAL -->
@@ -137,12 +211,25 @@
               disabled
               title="Página ainda não conectada"
             >
-              <span class="submenu-icone">♡</span>
-              <span>Saúde e Social</span>
-              <span class="menu-em-breve">Em breve</span>
+
+              <span
+                class="submenu-icone"
+                aria-hidden="true"
+              >
+                ♡
+              </span>
+
+              <span>
+                Saúde e Social
+              </span>
+
+              <span class="menu-em-breve">
+                Em breve
+              </span>
+
             </button>
 
-            <!-- CAPTAÇÃO / CADASTRO -->
+            <!-- CAPTAÇÃO E CADASTRO -->
 
             <button
               type="button"
@@ -152,12 +239,25 @@
               disabled
               title="Página ainda não conectada"
             >
-              <span class="submenu-icone">♧</span>
-              <span>Captação / Cadastro</span>
-              <span class="menu-em-breve">Em breve</span>
+
+              <span
+                class="submenu-icone"
+                aria-hidden="true"
+              >
+                ♧
+              </span>
+
+              <span>
+                Captação / Cadastro
+              </span>
+
+              <span class="menu-em-breve">
+                Em breve
+              </span>
+
             </button>
 
-            <!-- FINANCEIRO / CREDENCIAMENTO -->
+            <!-- FINANCEIRO E CREDENCIAMENTO -->
 
             <button
               type="button"
@@ -167,12 +267,25 @@
               disabled
               title="Página ainda não conectada"
             >
-              <span class="submenu-icone">◇</span>
-              <span>Financeiro / Credenciamento</span>
-              <span class="menu-em-breve">Em breve</span>
+
+              <span
+                class="submenu-icone"
+                aria-hidden="true"
+              >
+                ◇
+              </span>
+
+              <span>
+                Financeiro / Credenciamento
+              </span>
+
+              <span class="menu-em-breve">
+                Em breve
+              </span>
+
             </button>
 
-            <!-- CRM / ATENDIMENTO -->
+            <!-- CRM E ATENDIMENTO -->
 
             <button
               type="button"
@@ -182,9 +295,22 @@
               disabled
               title="Página ainda não conectada"
             >
-              <span class="submenu-icone">▤</span>
-              <span>CRM / Atendimento</span>
-              <span class="menu-em-breve">Em breve</span>
+
+              <span
+                class="submenu-icone"
+                aria-hidden="true"
+              >
+                ▤
+              </span>
+
+              <span>
+                CRM / Atendimento
+              </span>
+
+              <span class="menu-em-breve">
+                Em breve
+              </span>
+
             </button>
 
             <!-- NIP -->
@@ -197,9 +323,22 @@
               disabled
               title="Página ainda não conectada"
             >
-              <span class="submenu-icone">◉</span>
-              <span>NIP</span>
-              <span class="menu-em-breve">Em breve</span>
+
+              <span
+                class="submenu-icone"
+                aria-hidden="true"
+              >
+                ◉
+              </span>
+
+              <span>
+                NIP
+              </span>
+
+              <span class="menu-em-breve">
+                Em breve
+              </span>
+
             </button>
 
           </div>
@@ -208,22 +347,29 @@
 
       </nav>
 
-      <!-- RODAPÉ DO MENU -->
+      <!-- =========================================
+           USUÁRIO E SAÍDA
+      ========================================== -->
 
       <div class="menu-rodape">
 
         <div class="usuario">
-          <span class="usuario-nome">Teste</span>
+
+          <span class="usuario-nome">
+            Teste
+          </span>
 
           <span class="usuario-email">
             teste@corporativo.com
           </span>
+
         </div>
 
         <a
           href="./login.html"
           class="botao-sair"
           id="botaoSair"
+          title="Sair do NEXUS"
         >
           Sair do NEXUS
         </a>
@@ -232,15 +378,23 @@
 
     </aside>
 
-    <!-- ==================================
-         ÁREA PRINCIPAL
-    =================================== -->
+    <!-- =========================================
+         CONTEÚDO PRINCIPAL
+    ========================================== -->
 
-    <main class="conteudo" id="conteudoPrincipal">
+    <main
+      class="conteudo"
+      id="conteudoPrincipal"
+    >
 
-      <!-- CABEÇALHO -->
+      <!-- =========================================
+           CABEÇALHO COMPACTO
+      ========================================== -->
 
-      <header class="topo" id="topoPrincipal">
+      <header
+        class="topo"
+        id="topoPrincipal"
+      >
 
         <div class="topo-informacoes">
 
@@ -260,7 +414,10 @@
 
         <div class="topo-status">
 
-          <span class="status-indicador"></span>
+          <span
+            class="status-indicador"
+            aria-hidden="true"
+          ></span>
 
           <span>
             Ambiente demonstrativo
@@ -270,9 +427,9 @@
 
       </header>
 
-      <!-- ==================================
-           CONTEÚDO DINÂMICO
-      =================================== -->
+      <!-- =========================================
+           ÁREA DINÂMICA
+      ========================================== -->
 
       <section
         class="area-conteudo"
@@ -280,12 +437,16 @@
         aria-label="Conteúdo do painel selecionado"
       >
 
-        <!-- TELA INICIAL DA VISÃO GERAL -->
+        <!-- =========================================
+             PÁGINA INICIAL
+        ========================================== -->
 
         <div
           class="pagina-inicial"
           id="paginaInicial"
         >
+
+          <!-- BOAS-VINDAS -->
 
           <section class="boas-vindas">
 
@@ -298,14 +459,15 @@
             </h2>
 
             <p>
-              Este é o ambiente central da plataforma NEXUS.
-              Utilize o menu lateral para navegar entre os
-              dashboards e explorar os recursos disponíveis.
+              Este é o ambiente central da plataforma
+              NEXUS. Utilize o menu lateral para navegar
+              entre os dashboards e explorar os recursos
+              disponíveis.
             </p>
 
           </section>
 
-          <!-- ESPAÇO FUTURO -->
+          <!-- ESPAÇO PARA INDICADORES FUTUROS -->
 
           <section class="area-futura">
 
@@ -332,9 +494,9 @@
 
         </div>
 
-        <!-- ==================================
-             VISUALIZADOR DE DASHBOARDS
-        =================================== -->
+        <!-- =========================================
+             DASHBOARD DINÂMICO
+        ========================================== -->
 
         <div
           class="painel-dinamico"
@@ -342,7 +504,7 @@
           hidden
         >
 
-          <!-- INDICADOR DE CARREGAMENTO -->
+          <!-- CARREGAMENTO -->
 
           <div
             class="painel-carregando"
@@ -351,14 +513,19 @@
             aria-live="polite"
             hidden
           >
-            <span class="carregando-circulo"></span>
+
+            <span
+              class="carregando-circulo"
+              aria-hidden="true"
+            ></span>
 
             <span>
               Carregando dashboard...
             </span>
+
           </div>
 
-          <!-- IFRAME -->
+          <!-- VISUALIZADOR DE DASHBOARDS -->
 
           <iframe
             id="iframeDashboard"
@@ -375,7 +542,9 @@
 
   </div>
 
-  <!-- JAVASCRIPT DA VISÃO GERAL -->
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================== -->
 
   <script src="../JAVA/visao-geral.js"></script>
 
