@@ -40,7 +40,7 @@
   const PAINEL_PRINCIPAL = "Visão Geral";
 
   // Destino temporário até criarmos a Visão Geral.
-  const PAGINA_PRINCIPAL = "./inteligencia.html";
+  const PAGINA_PRINCIPAL = "./visao-geral.html";
 
   const USUARIOS_AUTORIZADOS = [
     {
