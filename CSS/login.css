@@ -750,209 +750,74 @@ button:focus-visible,
 }
 
 
-/* =====================================================
-   NEXUS — CORREÇÃO RESPONSIVA DA ROLAGEM VERTICAL
-   Desktop, tablet e celular
-===================================================== */
 
-/* Impede a rolagem da página principal */
-html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+/* ==================================================
+   NEXUS V2 — CORREÇÃO FINAL DA ROLAGEM DA PÁGINA
+================================================== */
+
+html,
+body {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
 }
 
 body {
-    width: 100%;
-    height: 100dvh;
-    min-height: 0;
-    margin: 0;
-    overflow: hidden;
-    overscroll-behavior: none;
+    position: relative !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
 }
 
-/* Mantém a cena dentro da área visível */
-.cena {
-    width: min(1240px, 100%);
-    height: 100dvh;
-    min-height: 0;
-    max-height: 100dvh;
-    padding: 16px 40px;
-    overflow: hidden;
+/* Área principal do login */
+body > .cena,
+#cena {
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: 100dvh !important;
+
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+/* Evita que o fundo decorativo gere rolagem */
+.fundo-rede,
+.fundo-brilho,
+.fundo-grade {
+    pointer-events: none;
+}
+
+/* Mantém o formulário acessível */
+.lado-form,
+#painelLogin {
     box-sizing: border-box;
+    max-height: calc(100dvh - 24px);
 }
 
-/* Ajusta o personagem à altura disponível */
-.nexus-janela {
-    height: min(72dvh, 650px);
-}
-
-/* Evita que o formulário ultrapasse a tela */
-.lado-form {
-    max-height: calc(100dvh - 32px);
-}
-
-/* Telas de desktop com pouca altura */
-@media (min-width: 901px) and (max-height: 760px) {
-
-    .cena {
-        padding-top: 8px;
-        padding-bottom: 8px;
-        gap: 28px;
-    }
-
-    .nexus-janela {
-        height: min(68dvh, 560px);
-    }
-
-    .lado-form {
-        padding: 22px 28px;
-        max-height: calc(100dvh - 16px);
-    }
-
-    .marca {
-        margin-bottom: 16px;
-    }
-
-    .subtitulo {
-        margin-bottom: 16px;
-    }
-
-    .rodape {
-        margin-top: 14px;
-        padding-top: 12px;
-    }
-}
-
-/* TABLETS E CELULARES */
+/* Em dispositivos menores, permite rolagem somente
+   dentro do formulário, caso seja indispensável */
 @media (max-width: 900px) {
-
-    .cena {
-        height: 100dvh;
-        min-height: 0;
-        max-height: 100dvh;
-        padding: 8px 16px;
-        gap: 4px;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto minmax(0, 1fr);
-        align-content: center;
-        overflow: hidden;
+    #cena {
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        padding: 8px 12px !important;
     }
 
-    .lado-nexus {
-        min-height: 0;
-        max-height: 24dvh;
-    }
-
-    .nexus-janela {
-        width: min(42%, 165px);
-        height: auto;
-    }
-
-    .balao {
-        min-height: 0;
-        padding: 8px 10px;
-        font-size: 12px;
-    }
-
-    .lado-form {
+    #painelLogin {
         min-height: 0;
         max-height: 100%;
-        margin-top: 0;
-        padding: 16px 18px;
         overflow-y: auto;
-        overscroll-behavior: contain;
         scrollbar-width: none;
     }
 
-    .lado-form::-webkit-scrollbar {
+    #painelLogin::-webkit-scrollbar {
         display: none;
     }
-
-    .marca {
-        margin-bottom: 12px;
-    }
-
-    .subtitulo {
-        margin-bottom: 14px;
-    }
-
-    .campo {
-        margin-bottom: 10px;
-    }
-
-    .campo-caixa input {
-        height: 44px;
-    }
-
-    .botao-entrar {
-        height: 46px;
-    }
-
-    .rodape {
-        margin-top: 12px;
-        padding-top: 10px;
-    }
 }
-
-/* CELULARES COM ALTURA REDUZIDA */
-@media (max-width: 900px) and (max-height: 700px) {
-
-    .cena {
-        padding: 4px 12px;
-        gap: 2px;
-    }
-
-    .lado-nexus {
-        max-height: 15dvh;
-    }
-
-    .nexus-janela {
-        width: min(30%, 105px);
-    }
-
-    .balao {
-        padding: 6px 8px;
-        font-size: 11px;
-    }
-
-    .lado-form {
-        padding: 12px 14px;
-    }
-
-    .marca {
-        margin-bottom: 8px;
-    }
-
-    .marca-icone {
-        width: 36px;
-        height: 36px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    .subtitulo {
-        margin: 6px 0 10px;
-        font-size: 12px;
-    }
-
-    .campo {
-        margin-bottom: 8px;
-    }
-
-    .campo-caixa input {
-        height: 40px;
-    }
-
-    .botao-entrar {
-        height: 42px;
-    }
-
-    .rodape {
-        margin-top: 8px;
-        padding-top: 8px;
-    }
-}
-
