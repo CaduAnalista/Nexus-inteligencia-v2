@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1424">
+<title>Formulário para a reunião | NEXUS</title>
+<link rel="stylesheet" href="../CSS/formulario-reuniao.css">
+<script src="../JAVA/formulario-reuniao.js" defer></script>
+</head>
+<body>
+<!-- Página interna: o menu lateral pertence exclusivamente à Visão Geral. -->
+<main class="pagina-reuniao">
+  <header class="cabecalho-pagina">
+    <div>
+      <span class="sobretitulo">PROBLEMAS-SETORIAIS</span>
+      <h1>Formulário para a reunião</h1>
+      <p>Registre os assuntos que seu setor deseja discutir na próxima reunião.</p>
+    </div>
+    <span class="etiqueta-reuniao">Reuniões às segundas-feiras</span>
+  </header>
+  <p class="aviso-informativo">Cada setor pode registrar até <strong>3 assuntos por reunião</strong>. Após o envio, os assuntos aparecerão na página “Assuntos por setor”.</p>
+  <section class="cartao-formulario" aria-labelledby="tituloFormulario">
+    <div class="cartao-cabecalho">
+      <h2 id="tituloFormulario">Registrar assuntos</h2>
+      <span>* Campos obrigatórios</span>
+    </div>
+    <form id="formularioReuniao">
+      <div class="grade-campos">
+        <label class="campo">
+          <span>Nome de quem escreveu <em>*</em></span>
+          <input id="nomeResponsavel" name="responsavel" type="text" placeholder="Digite seu nome" maxlength="120" autocomplete="name" required>
+        </label>
+        <label class="campo">
+          <span>Data do registro</span>
+          <input id="dataRegistro" name="dataRegistro" type="date" readonly>
+          <small>Preenchida automaticamente.</small>
+        </label>
+        <label class="campo">
+          <span>Setor <em>*</em></span>
+          <select id="setor" name="setor" required>
+            <option value="">Selecione o setor</option>
+            <option>Recepção</option>
+            <option>Patrimônio</option>
+            <option>Saúde</option>
+            <option>Social</option>
+            <option>Reembolso</option>
+            <option>Credenciamento</option>
+            <option>Auditoria</option>
+            <option>Concierge</option>
+            <option>Cadastro</option>
+            <option>Financeiro</option>
+            <option>Faturamento</option>
+          </select>
+        </label>
+        <label class="campo">
+          <span>Data da reunião <em>*</em></span>
+          <input id="dataReuniao" name="dataReuniao" type="date" required>
+          <small>Selecione a segunda-feira em que o assunto será discutido.</small>
+        </label>
+      </div>
+      <div class="secao-assuntos">
+        <div class="secao-assuntos-titulo">
+          <h3>Assuntos para discussão</h3>
+          <span>Até três assuntos por setor</span>
+        </div>
+        <label class="campo campo-assunto">
+          <span><b class="numero-assunto">1</b> Assunto 1 <em>*</em></span>
+          <textarea id="assunto1" name="assunto1" rows="3" maxlength="500" placeholder="Descreva o primeiro assunto" required></textarea>
+          <small><output id="contador1">0</output>/500 caracteres</small>
+        </label>
+        <label class="campo campo-assunto">
+          <span><b class="numero-assunto">2</b> Assunto 2 (opcional)</span>
+          <textarea id="assunto2" name="assunto2" rows="3" maxlength="500" placeholder="Descreva o segundo assunto, se necessário"></textarea>
+          <small><output id="contador2">0</output>/500 caracteres</small>
+        </label>
+        <label class="campo campo-assunto">
+          <span><b class="numero-assunto">3</b> Assunto 3 (opcional)</span>
+          <textarea id="assunto3" name="assunto3" rows="3" maxlength="500" placeholder="Descreva o terceiro assunto, se necessário"></textarea>
+          <small><output id="contador3">0</output>/500 caracteres</small>
+        </label>
+      </div>
+      <p id="mensagemFormulario" class="mensagem-formulario" role="status" aria-live="polite"></p>
+      <div class="acoes-formulario">
+        <button class="botao botao-secundario" type="reset">Limpar formulário</button>
+        <button class="botao botao-primario" type="submit">Registrar assuntos</button>
+      </div>
+    </form>
+  </section>
+</main>
+</body>
+</html>
