@@ -751,73 +751,25 @@ button:focus-visible,
 
 
 
-/* ==================================================
-   NEXUS V2 — CORREÇÃO FINAL DA ROLAGEM DA PÁGINA
-================================================== */
+/* CORREÇÃO DA ROLAGEM VERTICAL — NEXUS */
 
 html,
 body {
-    width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
-    max-height: 100% !important;
-
     margin: 0 !important;
-    padding: 0 !important;
-
-    overflow: hidden !important;
     overflow-x: hidden !important;
     overflow-y: hidden !important;
 }
 
 body {
-    position: relative !important;
     height: 100dvh !important;
-    max-height: 100dvh !important;
 }
 
-/* Área principal do login */
-body > .cena,
 #cena {
     height: 100dvh !important;
     min-height: 0 !important;
     max-height: 100dvh !important;
-
     box-sizing: border-box !important;
     overflow: hidden !important;
-}
-
-/* Evita que o fundo decorativo gere rolagem */
-.fundo-rede,
-.fundo-brilho,
-.fundo-grade {
-    pointer-events: none;
-}
-
-/* Mantém o formulário acessível */
-.lado-form,
-#painelLogin {
-    box-sizing: border-box;
-    max-height: calc(100dvh - 24px);
-}
-
-/* Em dispositivos menores, permite rolagem somente
-   dentro do formulário, caso seja indispensável */
-@media (max-width: 900px) {
-    #cena {
-        height: 100dvh !important;
-        max-height: 100dvh !important;
-        padding: 8px 12px !important;
-    }
-
-    #painelLogin {
-        min-height: 0;
-        max-height: 100%;
-        overflow-y: auto;
-        scrollbar-width: none;
-    }
-
-    #painelLogin::-webkit-scrollbar {
-        display: none;
-    }
 }
