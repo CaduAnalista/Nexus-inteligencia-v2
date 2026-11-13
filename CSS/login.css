@@ -1,103 +1,750 @@
+/* NEXUS — Tela de login
+   Paleta "Ciano elétrico". Todas as cores ficam nas variáveis abaixo. */
+
+:root {
+  --nexus-fundo: #0A0E1A;
+  --nexus-superficie: #121A2E;
+  --nexus-borda: #1F2C4A;
+  --nexus-primaria: #00E5FF;
+  --nexus-secundaria: #3D7BFF;
+  --nexus-acento: #8F6BFF;
+  --nexus-texto: #E6F1FF;
+  --nexus-texto-2: #8FA3C0;
+
+  /* ⚠️ provisórias: as cores de status ainda serão definidas (CLAUDE.md, seção 5) */
+  --nexus-erro: #FF5C7A;
+  --nexus-sucesso: #2EE6A6;
+
+  --raio: 14px;
+  --fonte: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fonte-mono: "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, monospace;
+
+  /* a troca para o modo alerta (e a volta) é animada */
+  transition:
+    --nexus-fundo 0.45s ease,
+    --nexus-superficie 0.45s ease,
+    --nexus-borda 0.45s ease,
+    --nexus-primaria 0.45s ease,
+    --nexus-secundaria 0.45s ease,
+    --nexus-acento 0.45s ease;
+}
+
+/* Registrar as cores como <color> é o que permite animar a troca de paleta. */
+@property --nexus-fundo { syntax: "<color>"; inherits: true; initial-value: #0A0E1A; }
+@property --nexus-superficie { syntax: "<color>"; inherits: true; initial-value: #121A2E; }
+@property --nexus-borda { syntax: "<color>"; inherits: true; initial-value: #1F2C4A; }
+@property --nexus-primaria { syntax: "<color>"; inherits: true; initial-value: #00E5FF; }
+@property --nexus-secundaria { syntax: "<color>"; inherits: true; initial-value: #3D7BFF; }
+@property --nexus-acento { syntax: "<color>"; inherits: true; initial-value: #8F6BFF; }
+
+/* Modo alerta: login recusado. A tela inteira fica vermelha por 2 s (o login.js tira a classe). */
+:root.alerta {
+  --nexus-fundo: #1A0910;
+  --nexus-superficie: #2A0F1A;
+  --nexus-borda: #5C1C2E;
+  --nexus-primaria: #FF3B5C;
+  --nexus-secundaria: #FF5A4E;
+  --nexus-acento: #FF2E88;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--nexus-fundo);
+  color: var(--nexus-texto);
+  font-family: var(--fonte);
+  overflow-x: hidden;
+}
 
 /* =====================================================
-   NEXUS — LOGIN SEM ROLAGEM VERTICAL
-   Desktop, tablet e celular
+   FUNDO
 ===================================================== */
 
-html,
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
+.fundo-rede {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
-body {
-    min-height: 100dvh;
+.fundo-brilho {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 28% 42%, color-mix(in srgb, var(--nexus-primaria) 16%, transparent), transparent 38%),
+    radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--nexus-acento) 14%, transparent), transparent 34%),
+    radial-gradient(circle at 70% 95%, color-mix(in srgb, var(--nexus-secundaria) 12%, transparent), transparent 40%);
 }
 
-/* DESKTOP */
+/* Piso em perspectiva, estilo holograma */
+.fundo-grade {
+  position: fixed;
+  left: -50%;
+  right: -50%;
+  bottom: -10vh;
+  height: 55vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transform: perspective(520px) rotateX(62deg);
+  transform-origin: center top;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 70%, transparent);
+  opacity: 0.35;
+}
+
+/* A grade anda com transform (feito pela placa de vídeo, sem repintar a cada quadro).
+   Ela é uma "casa" (64 px) mais alta e anda exatamente uma casa: o laço não aparece. */
+.fundo-grade::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -64px;
+  bottom: 0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--nexus-primaria) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--nexus-primaria) 22%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: grade-andar 6s linear infinite;
+  will-change: transform;
+}
+
+@keyframes grade-andar {
+  from { transform: translateY(0); }
+  to { transform: translateY(64px); }
+}
+
+/* =====================================================
+   CENA
+===================================================== */
+
 .cena {
-    height: 100dvh;
-    min-height: 0;
-    overflow: hidden;
-    padding-top: 16px;
-    padding-bottom: 16px;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  padding: 32px 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+  align-items: center;
+  gap: 48px;
 }
 
+/* =====================================================
+   PERSONAGEM
+===================================================== */
+
+.lado-nexus {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Janela que mostra o busto (da cabeça até o núcleo do peito) */
 .nexus-janela {
-    height: min(72dvh, 650px);
+  position: relative;
+  height: min(78vh, 700px);
+  aspect-ratio: 1105 / 1060;
+  max-width: 100%;
 }
 
-/* TABLET E CELULAR */
+.nexus-palco {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  aspect-ratio: 1105 / 1424;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nexus-corpo,
+.nexus-cabeca {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* O esmaecimento de baixo fica só no corpo: uma máscara no palco inteiro
+   faz o Chrome sumir com as íris quando a cabeça gira em 3D. */
+.nexus-corpo {
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 74%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 74%);
+}
+
+/* A imagem do corpo vai só até onde o esmaecimento termina (1064 de 1424 px de altura):
+   o resto nunca aparecia e só pesava no download. */
+.nexus-corpo img {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Recorte da cabeça: x 316, y 0, 464 × 533 na imagem original */
+.nexus-cabeca-img {
+  position: absolute;
+  left: 28.597%;
+  top: 0;
+  width: 41.991%;
+  height: 37.430%;
+  pointer-events: none;
+}
+
+.nexus-olhos {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Núcleo luminoso do peito (posição definida pelo nexus.js) */
+.nexus-nucleo {
+  --cor-nucleo: var(--nexus-primaria);
+  position: absolute;
+  width: 9%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(calc(0.85 + var(--pulso, 0.8) * 0.3));
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--cor-nucleo) 85%, #fff) 0 18%, color-mix(in srgb, var(--cor-nucleo) 55%, transparent) 38%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: calc(0.45 + var(--pulso, 0.8) * 0.5);
+  pointer-events: none;
+}
+
+.nexus-palco[data-expressao="feliz"] .nexus-nucleo { --cor-nucleo: #7DF6FF; }
+.nexus-palco[data-expressao="pensando"] .nexus-nucleo { --cor-nucleo: var(--nexus-acento); }
+.nexus-palco[data-expressao="erro"] .nexus-nucleo { --cor-nucleo: var(--nexus-erro); }
+
+/* Aros holográficos atrás da cabeça */
+.holo-aro {
+  position: absolute;
+  left: 52%;
+  top: 22%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.aro-1 {
+  width: 66%;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--nexus-primaria) 35%, transparent);
+  box-shadow: 0 0 60px color-mix(in srgb, var(--nexus-primaria) 18%, transparent), inset 0 0 60px color-mix(in srgb, var(--nexus-primaria) 10%, transparent);
+}
+
+.aro-2 {
+  width: 78%;
+  aspect-ratio: 1;
+  border: 2px dashed color-mix(in srgb, var(--nexus-secundaria) 35%, transparent);
+  animation: girar 40s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.nexus-plataforma {
+  width: 70%;
+  height: 26px;
+  margin-top: -40px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--nexus-primaria) 40%, transparent), transparent 70%);
+  filter: blur(6px);
+  opacity: 0.7;
+}
+
+/* Balão de fala */
+.balao {
+  position: absolute;
+  z-index: 3;
+  top: 9%;
+  left: 3%;
+  max-width: 260px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--nexus-primaria) 40%, var(--nexus-borda));
+  border-radius: 16px 16px 16px 4px;
+  background: color-mix(in srgb, var(--nexus-superficie) 82%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 24px color-mix(in srgb, var(--nexus-primaria) 12%, transparent);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--nexus-texto);
+  animation: flutuar 5s ease-in-out infinite;
+}
+
+.balao-ponto {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--nexus-primaria);
+  box-shadow: 0 0 10px var(--nexus-primaria);
+}
+
+.balao.digitando #balaoTexto::after {
+  content: "▍";
+  margin-left: 2px;
+  color: var(--nexus-primaria);
+  animation: piscar-cursor 0.8s steps(1) infinite;
+}
+
+@keyframes piscar-cursor { 50% { opacity: 0; } }
+
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+
+.lado-form {
+  position: relative;
+  padding: 32px;
+  border: 1px solid var(--nexus-borda);
+  border-radius: 22px;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--nexus-superficie) 92%, transparent), color-mix(in srgb, var(--nexus-fundo) 88%, transparent));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Linha luminosa no topo do cartão */
+.lado-form::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--nexus-primaria), var(--nexus-acento), transparent);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.marca-icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--nexus-fundo);
+  border: 1px solid var(--nexus-borda);
+  padding: 2px;
+}
+
+.marca-nome {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  background: linear-gradient(90deg, var(--nexus-texto), var(--nexus-primaria));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.marca-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--nexus-texto-2);
+}
+
+.status-sistema {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--nexus-borda);
+  border-radius: 999px;
+  font-family: var(--fonte-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--nexus-texto-2);
+}
+
+.status-sistema i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--nexus-sucesso);
+  box-shadow: 0 0 8px var(--nexus-sucesso);
+  animation: pulsar 2s ease-in-out infinite;
+}
+
+@keyframes pulsar { 50% { opacity: 0.4; } }
+
+.sobretitulo {
+  margin: 0 0 6px;
+  font-family: var(--fonte-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--nexus-primaria);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.subtitulo {
+  margin: 8px 0 26px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--nexus-texto-2);
+}
+
+.campo { margin-bottom: 16px; }
+
+.campo label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nexus-texto-2);
+}
+
+.campo-caixa {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-caixa svg {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--nexus-texto-2);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+  transition: stroke 0.2s;
+}
+
+.campo-caixa svg.seta {
+  left: auto;
+  right: 14px;
+}
+
+.campo-caixa input,
+.campo-caixa select {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px 0 44px;
+  border: 1px solid var(--nexus-borda);
+  border-radius: var(--raio);
+  background: color-mix(in srgb, var(--nexus-fundo) 70%, transparent);
+  color: var(--nexus-texto);
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.campo-caixa select { cursor: pointer; padding-right: 40px; }
+.campo-caixa select:invalid { color: var(--nexus-texto-2); }
+.campo-caixa select option { background: var(--nexus-superficie); color: var(--nexus-texto); }
+
+.campo-caixa input::placeholder { color: color-mix(in srgb, var(--nexus-texto-2) 70%, transparent); }
+
+.campo-caixa input:hover,
+.campo-caixa select:hover { border-color: color-mix(in srgb, var(--nexus-primaria) 35%, var(--nexus-borda)); }
+
+.campo-caixa input:focus,
+.campo-caixa select:focus {
+  border-color: var(--nexus-primaria);
+  background: color-mix(in srgb, var(--nexus-fundo) 90%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nexus-primaria) 16%, transparent);
+}
+
+.campo-caixa:focus-within svg { stroke: var(--nexus-primaria); }
+
+.aviso {
+  min-height: 20px;
+  margin: 4px 0 12px;
+  font-size: 13px;
+  color: var(--nexus-erro);
+}
+
+.aviso.sucesso { color: var(--nexus-sucesso); }
+
+.botao-entrar {
+  width: 100%;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: var(--raio);
+  background: linear-gradient(90deg, var(--nexus-primaria), color-mix(in srgb, var(--nexus-primaria) 60%, var(--nexus-secundaria)));
+  color: var(--nexus-fundo);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--nexus-primaria) 30%, transparent);
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+}
+
+.botao-entrar svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s;
+}
+
+.botao-entrar:hover { filter: brightness(1.08); box-shadow: 0 10px 38px color-mix(in srgb, var(--nexus-primaria) 45%, transparent); }
+.botao-entrar:hover svg { transform: translateX(3px); }
+.botao-entrar:active { transform: translateY(1px); }
+.botao-entrar:disabled { cursor: progress; filter: saturate(0.6); }
+
+.botao-demo {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px dashed var(--nexus-borda);
+  border-radius: var(--raio);
+  background: transparent;
+  color: var(--nexus-texto-2);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.botao-demo:hover { color: var(--nexus-primaria); border-color: color-mix(in srgb, var(--nexus-primaria) 50%, var(--nexus-borda)); }
+
+button:focus-visible,
+.nexus-palco:focus-visible {
+  outline: 2px solid var(--nexus-primaria);
+  outline-offset: 3px;
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--nexus-borda);
+  font-size: 12px;
+  color: var(--nexus-texto-2);
+}
+
+.rodape svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--nexus-primaria);
+  stroke-width: 1.8;
+}
+
+/* Estados do formulário */
+.lado-form.tremer { animation: tremer 0.45s; }
+
+@keyframes tremer {
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+
+/* =====================================================
+   MODO ALERTA (login recusado)
+===================================================== */
+
+/* O NEXUS fica todo em tons de vermelho (filtro SVG no login.html), com brilho em volta */
+.alerta .nexus-palco {
+  filter: url(#filtroAlerta) drop-shadow(0 0 22px rgba(255, 59, 92, 0.55));
+}
+
+.alerta .botao-entrar { color: #FFF1F3; }
+
+/* =====================================================
+   PORTAL (login aceito → transição para outra dimensão)
+===================================================== */
+
+.portal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  pointer-events: all;
+  overflow: hidden;
+}
+
+/* Linha do tempo (2,8 s, igual a DURACAO_PORTAL no login.js e ao som):
+   0 → 2,4 s  a cena se desfaz em desfoque, como se a realidade derretesse;
+   0 → 2,8 s  a fumaça (canvas do portal-fumaca.js) nasce no centro e toma a tela;
+   1,8 → 2,7 s a névoa clara cobre tudo e a página de destino abre. */
+.portal-ativo .cena {
+  animation: desfazer 2.4s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+@keyframes desfazer {
+  0% { transform: none; filter: blur(0) brightness(1); opacity: 1; }
+  45% { transform: scale(1.03); filter: blur(2px) brightness(1.15) saturate(1.2); opacity: 0.9; }
+  100% { transform: scale(1.12); filter: blur(22px) brightness(1.7) saturate(1.5); opacity: 0; }
+}
+
+.portal-ativo .fundo-grade::before { animation-duration: 1.2s; }
+
+/* Fumaça: o canvas é desenhado em meia resolução e esticado (o desfoque esconde isso) */
+.portal-fumaca {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(6px);
+}
+
+/* Névoa final: clara, quase branca no centro e ciano nas bordas */
+.portal-nevoa {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #F2FEFF 0%, #C9F7FF 30%, #7FDDF0 62%, #2F7FA6 100%);
+  opacity: 0;
+  animation: nevoa-cobrir 0.9s 1.8s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+@keyframes nevoa-cobrir { to { opacity: 1; } }
+
+/* Com menos movimento: só escurece e troca de página */
+.portal.simples .portal-nevoa { background: var(--nexus-fundo); animation: nevoa-cobrir 0.3s forwards; }
+
+/* =====================================================
+   CELULAR E TABLET
+===================================================== */
+
 @media (max-width: 900px) {
+  .cena {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 16px 16px 28px;
+    align-content: start;
+  }
 
-    .cena {
-        height: 100dvh;
-        min-height: 0;
-        padding: 8px 14px;
-        gap: 0;
-        align-content: center;
-        overflow: hidden;
-    }
+  /* Balão à esquerda e a cabeça ampliada à direita */
+  .lado-nexus {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
 
-    .lado-nexus {
-        min-height: 0;
-    }
+  .nexus-janela {
+    flex: none;
+    height: auto;
+    width: min(58%, 260px);
+    aspect-ratio: 1105 / 980;
+    overflow: hidden;
+  }
 
-    .nexus-janela {
-        width: min(43%, 175px);
-        height: auto;
-    }
+  /* palco 160% maior que a janela, centrado na cabeça */
+  .nexus-palco {
+    width: 160%;
+    left: -33.2%;
+    top: 3%;
+  }
 
-    .balao {
-        min-height: 0;
-        padding: 8px 10px;
-        font-size: 12px;
-    }
+  .nexus-corpo {
+    -webkit-mask-image: linear-gradient(to bottom, #000 33%, transparent 41%);
+    mask-image: linear-gradient(to bottom, #000 33%, transparent 41%);
+  }
 
-    .lado-form {
-        margin-top: -4px;
-        padding: 16px 18px;
-    }
+  .nexus-plataforma { display: none; }
 
-    .marca {
-        margin-bottom: 12px;
-    }
+  .holo-aro { left: 50%; top: 45%; }
+  .aro-1 { width: 84%; }
+  .aro-2 { width: 98%; }
+
+  .balao {
+    position: relative;
+    top: auto;
+    left: auto;
+    flex: 1;
+    max-width: none;
+    min-height: 64px;
+    padding: 10px 12px;
+    border-radius: 16px 16px 4px 16px;
+    font-size: 13px;
+  }
+
+  .lado-form {
+    margin-top: -8px;
+    padding: 24px 20px;
+  }
+
+  /* Desfoque de fundo é caro na GPU do celular (ainda mais com o fundo animado atrás).
+     Os painéis já são quase opacos, então sem ele o visual praticamente não muda. */
+  .lado-form,
+  .balao {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .balao { background: color-mix(in srgb, var(--nexus-superficie) 94%, transparent); }
+
+  .marca { margin-bottom: 20px; }
 }
 
-/* CELULARES COM TELA BAIXA */
-@media (max-width: 900px) and (max-height: 740px) {
+@media (max-width: 380px) {
+  .status-sistema { display: none; }
+}
 
-    .cena {
-        padding: 4px 12px;
-    }
+/* =====================================================
+   MOVIMENTO REDUZIDO
+===================================================== */
 
-    .nexus-janela {
-        width: min(30%, 115px);
-    }
-
-    .lado-form {
-        padding: 10px 14px;
-    }
-
-    .marca {
-        margin-bottom: 6px;
-    }
-
-    .titulo {
-        margin-bottom: 8px;
-    }
-
-    .campo {
-        margin-bottom: 8px;
-    }
-
-    .campo-caixa {
-        height: 42px;
-    }
-
-    .botao-entrar {
-        height: 44px;
-    }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
