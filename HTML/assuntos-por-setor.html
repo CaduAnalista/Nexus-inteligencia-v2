@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1424">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Assuntos por setor | NEXUS</title>
+  <link rel="stylesheet" href="../CSS/assuntos-por-setor.css">
+  <script src="../JAVA/assuntos-por-setor.js" defer></script>
+</head>
+<body>
+  <!-- O menu lateral pertence exclusivamente ao visao-geral.html. -->
+  <main class="pagina-assuntos" id="paginaAssuntos">
+    <header class="cabecalho-pagina">
+      <div>
+        <span class="sobretitulo">PROBLEMAS-SETORIAIS</span>
+        <h1>Assuntos por setor</h1>
+        <p>Consulte e acompanhe os assuntos registrados para a reunião.</p>
+      </div>
+      <span class="etiqueta-reuniao">Reuniões às segundas-feiras</span>
+    </header>
+
+    <section class="barra-ferramentas" aria-label="Filtros da reunião">
+      <label class="campo-data" for="filtroDataReuniao">
+        <span>Data da reunião</span>
+        <input type="date" id="filtroDataReuniao" name="filtroDataReuniao">
+      </label>
+      <label class="campo-busca" for="buscaAssuntos">
+        <span>Buscar setor ou assunto</span>
+        <input type="search" id="buscaAssuntos" placeholder="Digite para buscar..." autocomplete="off">
+      </label>
+      <button class="botao-atualizar" id="atualizarAssuntos" type="button">Atualizar</button>
+    </section>
+
+    <p class="aviso-informativo" id="avisoAssuntos" role="status">
+      Os setores sem assuntos ficam discretos. Ao concluir todos os assuntos de um setor, seu cartão ficará verde.
+    </p>
+
+    <section class="grade-setores" id="gradeSetores" aria-label="Assuntos registrados por setor">
+      <article class="cartao-setor sem-assuntos" data-setor="Recepção" aria-labelledby="titulo-recepcao">
+        <div class="cartao-cabecalho"><h2 id="titulo-recepcao">Recepção</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Recepção"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Patrimônio" aria-labelledby="titulo-patrimonio">
+        <div class="cartao-cabecalho"><h2 id="titulo-patrimonio">Patrimônio</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Patrimônio"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Saúde" aria-labelledby="titulo-saude">
+        <div class="cartao-cabecalho"><h2 id="titulo-saude">Saúde</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Saúde"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Social" aria-labelledby="titulo-social">
+        <div class="cartao-cabecalho"><h2 id="titulo-social">Social</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Social"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Reembolso" aria-labelledby="titulo-reembolso">
+        <div class="cartao-cabecalho"><h2 id="titulo-reembolso">Reembolso</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Reembolso"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Credenciamento" aria-labelledby="titulo-credenciamento">
+        <div class="cartao-cabecalho"><h2 id="titulo-credenciamento">Credenciamento</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Credenciamento"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Auditoria" aria-labelledby="titulo-auditoria">
+        <div class="cartao-cabecalho"><h2 id="titulo-auditoria">Auditoria</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Auditoria"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Concierge" aria-labelledby="titulo-concierge">
+        <div class="cartao-cabecalho"><h2 id="titulo-concierge">Concierge</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Concierge"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Cadastro" aria-labelledby="titulo-cadastro">
+        <div class="cartao-cabecalho"><h2 id="titulo-cadastro">Cadastro</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Cadastro"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Financeiro" aria-labelledby="titulo-financeiro">
+        <div class="cartao-cabecalho"><h2 id="titulo-financeiro">Financeiro</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Financeiro"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+      <article class="cartao-setor sem-assuntos" data-setor="Faturamento" aria-labelledby="titulo-faturamento">
+        <div class="cartao-cabecalho"><h2 id="titulo-faturamento">Faturamento</h2><span class="cartao-acoes"></span></div>
+        <ul class="lista-assuntos" aria-label="Assuntos de Faturamento"></ul><p class="mensagem-vazia">Nenhum assunto cadastrado</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
