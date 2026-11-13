@@ -1370,3 +1370,80 @@ button:focus-visible,
     min-height: 560px !important;
   }
 }
+
+
+/* ==========================================================
+   NEXUS V2 — INTEGRAÇÃO COM VISÃO GERAL
+   O menu global é responsabilidade de visao-geral.html.
+   Preserva os mapas Leaflet, controles e indicadores.
+========================================================== */
+
+html, body {
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.dashboard.dashboard-mapas {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+}
+
+.dashboard-header {
+    gap: 12px;
+}
+
+.dashboard-header .header-title .eyebrow {
+    display: none;
+}
+
+.dashboard-header .header-title h1 {
+    font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+}
+
+.dashboard-header .header-title p {
+    margin-bottom: 0;
+}
+
+.maps-grid,
+.maps-grid-large,
+.map-panel {
+    min-width: 0;
+}
+
+/* Em um iframe, o dashboard deve manter altura útil para os mapas. */
+.maps-grid.maps-grid-large {
+    flex: 1 0 auto;
+    min-height: 520px;
+}
+
+.map-panel.map-panel-large {
+    min-height: 520px;
+}
+
+.map-canvas.map-canvas-large {
+    min-height: 280px;
+}
+
+@media (max-width: 900px) {
+    .dashboard-header,
+    .dashboard-header .header-right {
+        flex-wrap: wrap;
+    }
+    .maps-grid.maps-grid-large {
+        min-height: 0;
+    }
+    .map-panel.map-panel-large {
+        min-height: 520px;
+    }
+}
