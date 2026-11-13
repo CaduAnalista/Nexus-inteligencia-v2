@@ -2,10 +2,13 @@
 /*
 =====================================================
  NEXUS V2 — VISÃO GERAL
- Navegação dinâmica entre dashboards
+ Navegação dinâmica e menu lateral retrátil
 
- Protótipo demonstrativo
- Compatível com GitHub Pages
+ Compatível com:
+ HTML/visao-geral.html
+ CSS/visao-geral.css
+
+ Ambiente demonstrativo — GitHub Pages
 =====================================================
 */
 
@@ -13,14 +16,22 @@
   "use strict";
 
   /* ================================================
-     ELEMENTOS DO HTML
+     ELEMENTOS DA INTERFACE
   ================================================= */
+
+  const menuLateral = document.getElementById(
+    "menuLateral"
+  );
+
+  const botaoRecolherMenu = document.getElementById(
+    "botaoRecolherMenu"
+  );
 
   const botaoVisaoGeral = document.getElementById(
     "botaoVisaoGeral"
   );
 
-  const botaoExpandir = document.getElementById(
+  const botaoExpandirMenu = document.getElementById(
     "botaoExpandirMenu"
   );
 
@@ -59,12 +70,14 @@
   );
 
   /* ================================================
-     VERIFICAÇÃO DOS ELEMENTOS
+     VALIDAÇÃO INICIAL
   ================================================= */
 
   const elementosObrigatorios = [
+    menuLateral,
+    botaoRecolherMenu,
     botaoVisaoGeral,
-    botaoExpandir,
+    botaoExpandirMenu,
     submenu,
     paginaInicial,
     painelDinamico,
@@ -74,11 +87,10 @@
     subtituloPagina
   ];
 
-  if (elementosObrigatorios.some((item) => !item)) {
+  if (elementosObrigatorios.some(el => !el)) {
     console.error(
-      "NEXUS: elementos da Visão Geral não encontrados."
+      "NEXUS: elementos obrigatórios não encontrados."
     );
-
     return;
   }
 
@@ -86,95 +98,174 @@
      CONFIGURAÇÕES
   ================================================= */
 
-  const REDUZIR_MOVIMENTO = window.matchMedia(
+  const movimentoReduzido = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  const DURACAO_TRANSICAO = REDUZIR_MOVIMENTO
+  const DURACAO_TRANSICAO = movimentoReduzido
     ? 0
     : 180;
 
   const PAGINAS = {
     "visao-geral": {
       titulo: "Visão Geral",
-      subtitulo: "Central de Inteligência e Gestão Integrada"
+      subtitulo:
+        "Central de Inteligência e Gestão Integrada"
     },
 
     "inteligencia": {
       titulo: "Inteligência de Rede",
-      subtitulo: "Análise territorial e rede assistencial"
+      subtitulo:
+        "Análise territorial e rede assistencial"
     },
 
     "saude-social": {
       titulo: "Saúde e Social",
-      subtitulo: "Indicadores de beneficiários e produtos"
+      subtitulo:
+        "Indicadores de beneficiários e produtos"
     },
 
     "captacao-cadastro": {
       titulo: "Captação / Cadastro",
-      subtitulo: "Indicadores de captação e cadastro"
+      subtitulo:
+        "Indicadores de captação e cadastro"
     },
 
     "financeiro-credenciamento": {
       titulo: "Financeiro / Credenciamento",
-      subtitulo: "Indicadores financeiros e rede credenciada"
+      subtitulo:
+        "Indicadores financeiros e rede credenciada"
     },
 
     "crm": {
       titulo: "CRM / Atendimento",
-      subtitulo: "Monitoramento de protocolos e atendimento"
+      subtitulo:
+        "Monitoramento de protocolos e atendimento"
     },
 
     "nip": {
       titulo: "NIP",
-      subtitulo: "Monitoramento de demandas e notificações"
+      subtitulo:
+        "Monitoramento de demandas e notificações"
     }
   };
 
   /* ================================================
-     ESTADO DA NAVEGAÇÃO
+     ESTADO DA APLICAÇÃO
   ================================================= */
 
   let paginaAtual = "visao-geral";
 
-  let carregamentoAtual = 0;
+  let urlAtual = "";
+
+  let identificadorNavegacao = 0;
 
   let temporizadorTransicao = null;
 
   let temporizadorCarregamento = null;
 
-  let urlAtual = "";
+  let menuRecolhido = false;
 
   /* ================================================
-     SUBMENU EXPANSÍVEL
+     CONTROLE DO MENU LATERAL
+  ================================================= */
+
+  function definirMenuLateral(recolhido) {
+    menuRecolhido = recolhido;
+
+    menuLateral.classList.toggle(
+      "recolhido",
+      recolhido
+    );
+
+    botaoRecolherMenu.setAttribute(
+      "aria-expanded",
+      String(!recolhido)
+    );
+
+    const descricao = recolhido
+      ? "Expandir menu lateral"
+      : "Recolher menu lateral";
+
+    botaoRecolherMenu.setAttribute(
+      "aria-label",
+      descricao
+    );
+
+    botaoRecolherMenu.title = descricao;
+
+    /*
+      Quando recolhido, o submenu fica oculto
+      pelo CSS. Ao expandir, o estado anterior
+      do submenu é preservado.
+    */
+
+    if (recolhido) {
+      botaoVisaoGeral.title =
+        "Expandir menu e abrir Visão Geral";
+    } else {
+      botaoVisaoGeral.title = "Visão Geral";
+    }
+  }
+
+  botaoRecolherMenu.addEventListener(
+    "click",
+    () => {
+      definirMenuLateral(!menuRecolhido);
+    }
+  );
+
+  /* ================================================
+     CONTROLE DO SUBMENU
   ================================================= */
 
   function definirSubmenu(aberto) {
-    submenu.classList.toggle("aberto", aberto);
+    submenu.classList.toggle(
+      "aberto",
+      aberto
+    );
 
-    botaoExpandir.setAttribute(
+    botaoExpandirMenu.setAttribute(
       "aria-expanded",
       String(aberto)
     );
 
-    botaoExpandir.setAttribute(
+    const descricao = aberto
+      ? "Recolher dashboards"
+      : "Expandir dashboards";
+
+    botaoExpandirMenu.setAttribute(
       "aria-label",
-      aberto
-        ? "Recolher dashboards"
-        : "Expandir dashboards"
+      descricao
     );
+
+    botaoExpandirMenu.title = descricao;
   }
 
-  botaoExpandir.addEventListener("click", () => {
-    const aberto = submenu.classList.contains(
-      "aberto"
-    );
+  botaoExpandirMenu.addEventListener(
+    "click",
+    () => {
+      /*
+        Se o menu lateral estiver recolhido,
+        primeiro ele será expandido.
+      */
 
-    definirSubmenu(!aberto);
-  });
+      if (menuRecolhido) {
+        definirMenuLateral(false);
+        definirSubmenu(true);
+        return;
+      }
+
+      const aberto = submenu.classList.contains(
+        "aberto"
+      );
+
+      definirSubmenu(!aberto);
+    }
+  );
 
   /* ================================================
-     TÍTULO E IDENTIFICAÇÃO DA PÁGINA
+     CABEÇALHO DINÂMICO
   ================================================= */
 
   function atualizarCabecalho(idPagina) {
@@ -186,15 +277,14 @@
 
     subtituloPagina.textContent = pagina.subtitulo;
 
-    document.title =
-      `NEXUS | ${pagina.titulo}`;
+    document.title = `NEXUS | ${pagina.titulo}`;
   }
 
   /* ================================================
-     DESTAQUE DO MENU
+     MENU ATIVO
   ================================================= */
 
-  function atualizarMenu(idPagina) {
+  function atualizarMenuAtivo(idPagina) {
     const visaoGeralAtiva =
       idPagina === "visao-geral";
 
@@ -214,11 +304,14 @@
       );
     }
 
-    botoesDashboards.forEach((botao) => {
+    botoesDashboards.forEach(botao => {
       const ativo =
         botao.dataset.pagina === idPagina;
 
-      botao.classList.toggle("ativo", ativo);
+      botao.classList.toggle(
+        "ativo",
+        ativo
+      );
 
       if (ativo) {
         botao.setAttribute(
@@ -257,60 +350,64 @@
   }
 
   /* ================================================
-     LIMPEZA DE TEMPORIZADORES
+     TEMPORIZADORES
   ================================================= */
 
   function limparTemporizadores() {
     if (temporizadorTransicao !== null) {
       clearTimeout(temporizadorTransicao);
-
       temporizadorTransicao = null;
     }
 
     if (temporizadorCarregamento !== null) {
       clearTimeout(temporizadorCarregamento);
-
       temporizadorCarregamento = null;
     }
   }
 
   /* ================================================
-     ABRIR VISÃO GERAL
+     VOLTAR À VISÃO GERAL
   ================================================= */
 
   function abrirVisaoGeral() {
+    /*
+      Se o menu estiver recolhido, clicar no
+      ícone Visão Geral expande o menu.
+    */
+
+    if (menuRecolhido) {
+      definirMenuLateral(false);
+    }
+
     if (paginaAtual === "visao-geral") {
       return;
     }
 
-    carregamentoAtual += 1;
+    identificadorNavegacao++;
 
     limparTemporizadores();
 
     paginaAtual = "visao-geral";
+    urlAtual = "";
 
     atualizarCabecalho("visao-geral");
-
-    atualizarMenu("visao-geral");
+    atualizarMenuAtivo("visao-geral");
 
     painelDinamico.hidden = true;
-
     paginaInicial.hidden = false;
 
     ocultarCarregamento();
 
     /*
-      Libera recursos do dashboard anterior.
-      O menu lateral permanece intacto.
+      Libera o dashboard anterior.
+      A estrutura principal não recarrega.
     */
 
     iframe.removeAttribute("src");
-
-    urlAtual = "";
   }
 
   /* ================================================
-     CARREGAR DASHBOARD
+     ABRIR DASHBOARD
   ================================================= */
 
   function abrirDashboard(idPagina, url) {
@@ -319,12 +416,11 @@
         "NEXUS: dashboard indisponível:",
         idPagina
       );
-
       return;
     }
 
     /*
-      Evita carregar novamente o mesmo painel.
+      Evita recarregar o mesmo dashboard.
     */
 
     if (
@@ -334,77 +430,81 @@
       return;
     }
 
-    carregamentoAtual += 1;
+    identificadorNavegacao++;
 
-    const identificador = carregamentoAtual;
+    const navegacaoAtual = identificadorNavegacao;
 
     limparTemporizadores();
 
     paginaAtual = idPagina;
-
     urlAtual = url;
 
     atualizarCabecalho(idPagina);
-
-    atualizarMenu(idPagina);
-
-    definirSubmenu(true);
+    atualizarMenuAtivo(idPagina);
 
     paginaInicial.hidden = true;
-
     painelDinamico.hidden = false;
+
+    /*
+      Mantém o menu aberto ou recolhido
+      conforme a escolha do usuário.
+    */
 
     mostrarCarregamento();
 
-    /*
-      Pequena transição antes de trocar o iframe.
-    */
-
     temporizadorTransicao = window.setTimeout(
       () => {
-        if (identificador !== carregamentoAtual) {
+        if (
+          navegacaoAtual !== identificadorNavegacao
+        ) {
           return;
         }
 
-        iframe.src = url;
+        iframe.title =
+          `Dashboard ${PAGINAS[idPagina].titulo}`;
 
-        /*
-          Se o dashboard demorar, o indicador
-          permanece visível até o evento load.
-        */
+        iframe.src = url;
       },
       DURACAO_TRANSICAO
     );
   }
 
   /* ================================================
-     CONCLUSÃO DO CARREGAMENTO
+     CARREGAMENTO DO IFRAME
   ================================================= */
 
   iframe.addEventListener("load", () => {
-    /*
-      Ignora eventos quando a Visão Geral
-      estiver selecionada.
-    */
-
     if (paginaAtual === "visao-geral") {
       return;
     }
 
     /*
-      Pequeno intervalo para a transição visual.
+      Pequeno intervalo para evitar
+      transições visuais bruscas.
     */
+
+    const navegacaoAtual = identificadorNavegacao;
+
+    if (temporizadorCarregamento !== null) {
+      clearTimeout(temporizadorCarregamento);
+    }
 
     temporizadorCarregamento = window.setTimeout(
       () => {
+        if (
+          navegacaoAtual !== identificadorNavegacao
+        ) {
+          return;
+        }
+
         ocultarCarregamento();
       },
-      REDUZIR_MOVIMENTO ? 0 : 100
+      movimentoReduzido ? 0 : 100
     );
   });
 
   /* ================================================
-     EVENTOS DOS BOTÕES
+     EVENTOS DE NAVEGAÇÃO
   ================================================= */
 
   botaoVisaoGeral.addEventListener(
@@ -412,12 +512,11 @@
     abrirVisaoGeral
   );
 
-  botoesDashboards.forEach((botao) => {
+  botoesDashboards.forEach(botao => {
     botao.addEventListener("click", () => {
       if (botao.disabled) return;
 
       const idPagina = botao.dataset.pagina;
-
       const url = botao.dataset.url;
 
       abrirDashboard(idPagina, url);
@@ -425,17 +524,18 @@
   });
 
   /* ================================================
-     ESTADO INICIAL
+     INICIALIZAÇÃO
   ================================================= */
+
+  definirMenuLateral(false);
 
   definirSubmenu(true);
 
-  atualizarMenu("visao-geral");
+  atualizarMenuAtivo("visao-geral");
 
   atualizarCabecalho("visao-geral");
 
   paginaInicial.hidden = false;
-
   painelDinamico.hidden = true;
 
   console.info(
