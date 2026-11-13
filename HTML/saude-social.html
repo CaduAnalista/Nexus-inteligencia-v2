@@ -10,30 +10,22 @@
 
   <meta name="theme-color" content="#08152b">
 
-  <title>ASSEFAZ | Distribuição Geográfica de Beneficiários</title>
+  <title>ASSEFAZ | Distribuição Geográfica de Beneficiários e Rede Credenciada</title>
 
-  <!-- FIM DA TRANSIÇÃO DE PORTAL (quando a página vem do login) -->
-  <script src="../JAVA/portal-chegada.js"></script>
+  <!-- Módulo interno da Visão Geral: sem menu ou transição de login própria. -->
+
+  <script>
+    // O módulo pertence à Visão Geral. Acesso isolado volta à página central.
+    if (window.self === window.top) {
+      window.location.replace('./visao-geral.html');
+    }
+  </script>
 
   <!-- CSS DO DASHBOARD -->
-  <link rel="stylesheet" href="../CSS/saude-social.css?v=12">
+  <link rel="stylesheet" href="../CSS/saude-social.css">
 
-
-  <!-- Integração visual: a navegação global pertence à Visão Geral -->
-  <style>
-    html, body { width: 100%; min-width: 0; }
-    body { margin: 0; }
-    .dashboard.dashboard-mapas { width: 100%; max-width: none; min-width: 0; box-sizing: border-box; }
-    .dashboard-header { gap: 12px; }
-    .dashboard-header .header-title .eyebrow { display: none; }
-    .dashboard-header .header-title h1 { font-size: clamp(1.1rem, 1.6vw, 1.5rem); }
-    .dashboard-header .header-title p { margin-bottom: 0; }
-    .maps-grid, .map-panel { min-width: 0; }
-    @media (max-width: 900px) {
-      .dashboard-header { flex-wrap: wrap; }
-      .dashboard-header .header-right { flex-wrap: wrap; }
-    }
-  </style>
+  <link rel="stylesheet" href="../CSS/rede-integrada.css">
+  <link rel="stylesheet" href="../CSS/saude-social-nexus.css">
 
   <!-- CSS DO LEAFLET -->
   <link
@@ -59,15 +51,15 @@
       <div class="header-title">
 
         <span class="eyebrow">
-          ASSEFAZ • INTELIGÊNCIA DE REDE
+          NEXUS • SAÚDE E SOCIAL
         </span>
 
         <h1>
-          Distribuição Geográfica de Beneficiários
+          Distribuição Geográfica de Beneficiários e Rede Credenciada
         </h1>
 
         <p>
-          Visualização territorial das vidas ativas no Rio de Janeiro
+          Análise territorial de beneficiários, hospitais, clínicas e laboratórios
         </p>
 
       </div>
@@ -94,7 +86,7 @@
         <i data-lucide="upload"></i>
 
         <span>
-          Importar Excel
+          Importar beneficiários
         </span>
 
       </label>
@@ -106,98 +98,21 @@
         hidden
       >
 
+      <label class="btn-importar" for="arquivoRede">Importar rede</label>
+      <input type="file" id="arquivoRede" accept=".xlsx,.xls,.xlsb" hidden>
+      <button type="button" class="btn-importar" id="btnAtualizarBases">Atualizar arquivos do site</button>
     </div>
 
   </header>
 
 
-  <!-- INDICADORES RESUMIDOS -->
-
-  <section class="summary-strip">
-
-    <div class="summary-item">
-
-      <span class="summary-label">
-        Total de vidas
-      </span>
-
-      <strong class="summary-value" id="totalVidas">
-        0
-      </strong>
-
-    </div>
-
-    <div class="summary-item">
-
-      <span class="summary-label">
-        Vidas no RJ
-      </span>
-
-      <strong class="summary-value" id="vidasRJ">
-        0
-      </strong>
-
-    </div>
-
-    <div class="summary-item">
-
-      <span class="summary-label">
-        Região Metropolitana
-      </span>
-
-      <strong
-        class="summary-value"
-        id="vidasMetropolitana">
-        0
-      </strong>
-
-    </div>
-
-    <div class="summary-item">
-
-      <span class="summary-label">
-        Municípios com beneficiários
-      </span>
-
-      <strong
-        class="summary-value"
-        id="totalMunicipios">
-        0
-      </strong>
-
-    </div>
-
-    <div class="summary-item summary-file">
-
-      <span class="summary-label">
-        Arquivo
-      </span>
-
-      <strong
-        class="summary-value"
-        id="nomeArquivo">
-        Nenhuma planilha carregada
-      </strong>
-
-    </div>
-
-    <div class="summary-item">
-
-      <span class="summary-label">
-        Atualizado em
-      </span>
-
-      <strong
-        class="summary-value"
-        id="ultimaAtualizacao">
-        --/--/----
-      </strong>
-
-    </div>
-
+  <section class="source-status" aria-label="Status das bases">
+    <p><b>Beneficiários:</b> <span id="statusBeneficiarios" role="status">Aguardando leitura</span></p>
+    <p><b>Rede:</b> <span id="statusRede" role="status">Aguardando leitura</span></p>
   </section>
-
-
+  <section class="summary-strip">
+<div class="summary-item"><span class="summary-label">Total de vidas</span><strong class="summary-value" id="totalVidas">0</strong></div><div class="summary-item"><span class="summary-label">Unidades da rede</span><strong class="summary-value" id="totalPrestadores">0</strong></div><div class="summary-item"><span class="summary-label">Hospitais</span><strong class="summary-value" id="totalHospitais">0</strong></div><div class="summary-item"><span class="summary-label">Clínicas</span><strong class="summary-value" id="totalClinicas">0</strong></div><div class="summary-item"><span class="summary-label">Laboratórios</span><strong class="summary-value" id="totalLaboratorios">0</strong></div><div class="summary-item"><span class="summary-label">Outros prestadores</span><strong class="summary-value" id="totalOutros">0</strong></div><div class="summary-item"><span class="summary-label">Municípios com beneficiários</span><strong class="summary-value" id="totalMunicipios">0</strong></div>
+  </section>
   <!-- TÍTULO DOS MAPAS -->
 
   <section class="maps-heading maps-heading-clean">
@@ -393,171 +308,40 @@
     </section>
 
 
-    <!-- MAPA 02 -->
-
-    <section class="map-panel map-panel-large">
-
-      <div class="map-panel-header">
-
-        <div class="map-panel-title">
-
-          <span class="map-number">
-            MAPA 02
-          </span>
-
-          <h3>
-            Estado do Rio de Janeiro
-          </h3>
-
-          <p>
-            Concentração de beneficiários por município
-          </p>
-
-        </div>
-
-        <div class="map-header-meta">
-
-          <div class="map-meta-box">
-
-            <span>
-              Total de vidas
-            </span>
-
-            <strong id="totalMapaEstado">
-              0
-            </strong>
-
-          </div>
-
-          <div class="map-meta-box">
-
-            <span>
-              Municípios identificados
-            </span>
-
-            <strong id="municipiosMapaEstado">
-              0
-            </strong>
-
-          </div>
-
-        </div>
-
+    <!-- MAPA 02: filtros e rede restritos a este mapa -->
+    <section class="map-panel map-panel-large map-panel-rede" aria-labelledby="tituloMapaRede">
+      <div class="map-panel-header"><div class="map-panel-title"><span class="map-number">MAPA 02</span><h3 id="tituloMapaRede">Estado do Rio de Janeiro</h3><p>Beneficiários e rede credenciada</p></div>
+      <div class="rede-filtros" aria-label="Filtros do mapa 2">
+        <div class="filtro-contrato"><span>Contratação</span><details id="contratoMenu" class="compact-menu"><summary id="resumoContrato">Todas as contratações</summary><div class="menu-options">
+          <label><input type="checkbox" name="contrato" value="DIRETA" checked> Direta (ASSEFAZ)</label>
+          <label><input type="checkbox" name="contrato" value="INDIRETA" checked> Indireta (reciprocidade)</label>
+          <label><input type="checkbox" name="contrato" value="NAO INFORMADO" checked> Não informada</label>
+        </div></details></div>
+        <label>Urgência<select id="filtroUrgencia"><option value="">Todas</option><option value="SIM">Sim</option><option value="NAO">Não</option><option value="NAO INFORMADO">Não informada</option></select></label>
+        <label>Classe de cadastro<select id="filtroClasse"><option value="">Todas</option></select></label>
+        <label>Especialidade<select id="filtroEspecialidade"><option value="">Todas</option></select></label>
+        <label>Município<select id="filtroMunicipio"><option value="">Todos</option></select></label>
+        <button type="button" id="limparFiltros" class="link-limpar">Limpar</button>
+      </div></div>
+      <div class="rede-toolbar">
+        <label class="benef-toggle"><input type="checkbox" id="exibirBeneficiarios" checked> Beneficiários</label>
+        <details id="camadasMenu" class="compact-menu"><summary>Camadas</summary><div class="menu-options">
+          <label><input type="checkbox" name="camadaRede" value="Hospitais" checked> Hospitais</label>
+          <label><input type="checkbox" name="camadaRede" value="Clínicas" checked> Clínicas</label>
+          <label><input type="checkbox" name="camadaRede" value="Laboratórios" checked> Laboratórios</label>
+          <label><input type="checkbox" name="camadaRede" value="Outros" checked> Outros</label>
+        </div></details>
+        <span id="modoRede" class="modo-rede">Rede resumida • amplie para detalhar</span><div class="rede-legenda"><span><i style="--cor:#168bff"></i>Hospitais</span><span><i style="--cor:#33c95a"></i>Clínicas</span><span><i style="--cor:#ad64ed"></i>Laboratórios</span><span><i style="--cor:#ffae38"></i>Outros</span></div>
       </div>
-
-
-      <!-- CONTROLES MAPA 02 -->
-
-      <div class="map-controls map-controls-clean">
-
-        <div class="map-view-options">
-
-          <button
-            type="button"
-            class="map-mode active"
-            id="btnCalorEstado">
-            Calor
-          </button>
-
-          <button
-            type="button"
-            class="map-mode"
-            id="btnBolhasEstado">
-            Bolhas
-          </button>
-
-          <button
-            type="button"
-            class="map-mode"
-            id="btnAmbosEstado">
-            Ambos
-          </button>
-
-        </div>
-
-        <div class="map-controls-right">
-
-          <span class="map-label-info">
-            Passe o mouse para visualizar as vidas
-          </span>
-
-          <button
-            type="button"
-            class="map-reset"
-            id="btnResetEstado"
-            title="Restaurar mapa"
-            aria-label="Restaurar mapa do estado">
-
-            <i data-lucide="maximize"></i>
-
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- ÁREA DO MAPA 02 -->
-
-      <div
-        class="map-canvas map-canvas-large"
-        id="mapaEstado"
-        aria-label="Mapa do Estado do Rio de Janeiro">
-
-        <div
-          class="map-placeholder"
-          id="placeholderEstado">
-
-          <i data-lucide="map"></i>
-
-          <strong>
-            Mapa do Estado do Rio de Janeiro
-          </strong>
-
-          <span>
-            Importe a planilha para visualizar os dados geográficos.
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- RODAPÉ MAPA 02 -->
-
-      <div class="map-panel-footer">
-
-        <div class="map-footer-info">
-
-          <span>
-            Maior concentração
-          </span>
-
-          <strong id="maiorMunicipioEstado">
-            —
-          </strong>
-
-        </div>
-
-        <div class="map-footer-info align-right">
-
-          <span>
-            Percentual no RJ
-          </span>
-
-          <strong id="percentualRJ">
-            0%
-          </strong>
-
-        </div>
-
-      </div>
-
+      <p id="resumoRede" class="rede-resumo" role="status">Aguardando leitura da rede.</p>
+      <div class="map-canvas map-canvas-large" id="mapaEstado" aria-label="Mapa 2: beneficiários e rede do Estado do Rio de Janeiro"><div class="map-placeholder" id="placeholderEstado"><strong>Estado do Rio de Janeiro</strong><span>Aguarde a leitura ou importe as planilhas.</span></div></div>
+      <div class="rede-map-bottom"><span>Calor: menor <span class="heat-scale" aria-hidden="true"></span> maior concentração</span><button type="button" class="map-reset" id="btnResetEstado" aria-label="Restaurar mapa estadual">Restaurar mapa</button></div>
     </section>
 
   </main>
 
 
+  <p id="avisoLocalizacao" class="localizacao-note">Rede agrupada por município • Localização aproximada</p>
   <!-- RODAPÉ GERAL -->
 
   <footer class="dashboard-footer">
@@ -576,7 +360,7 @@
 
     <div class="footer-right">
       <span>
-        Base ativa importada pelo usuário
+        Fontes: arquivos do site ou importação manual
       </span>
     </div>
 
@@ -597,7 +381,7 @@
 
 
 <!-- JAVASCRIPT DO DASHBOARD -->
-<script src="../JAVA/saude-social.js?v=12"></script>
+<script src="../JAVA/saude-social.js"></script>
 
 </body>
 </html>
