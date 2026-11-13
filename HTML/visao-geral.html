@@ -224,33 +224,47 @@
 
             </button>
 
-            <!-- CAPTAÇÃO E CADASTRO -->
+            <!-- PROBLEMAS-SETORIAIS: SUBMENU INDEPENDENTE -->
+            <div class="grupo-problemas" id="grupoProblemasSetoriais">
+              <div class="menu-principal menu-principal-problemas">
+                <button
+                  type="button"
+                  class="submenu-item menu-problemas-botao"
+                  id="botaoProblemasSetoriais"
+                  aria-expanded="false"
+                  aria-controls="submenuProblemasSetoriais"
+                  title="Expandir ou recolher Problemas-Setoriais"
+                >
+                  <span class="submenu-icone" aria-hidden="true">♧</span>
+                  <span>Problemas-Setoriais</span>
+                  <span class="seta-problemas" aria-hidden="true">⌄</span>
+                </button>
+              </div>
 
-            <button
-              type="button"
-              class="submenu-item"
-              data-pagina="captacao-cadastro"
-              data-url=""
-              disabled
-              title="Página ainda não conectada"
-            >
+              <div class="submenu submenu-problemas" id="submenuProblemasSetoriais" hidden>
+                <button
+                  type="button"
+                  class="submenu-item submenu-item-problemas"
+                  data-pagina="formulario-reuniao"
+                  data-url="./formulario-reuniao.html"
+                  title="Abrir formulário para a reunião"
+                >
+                  <span class="submenu-icone" aria-hidden="true">▤</span>
+                  <span>Formulário para a reunião</span>
+                </button>
 
-              <span
-                class="submenu-icone"
-                aria-hidden="true"
-              >
-                ♧
-              </span>
-
-              <span>
-                Problemas-Setoriais
-              </span>
-
-              <span class="menu-em-breve">
-                Em breve
-              </span>
-
-            </button>
+                <button
+                  type="button"
+                  class="submenu-item submenu-item-problemas"
+                  data-pagina="assuntos-por-setor"
+                  data-url="./assuntos-por-setor.html"
+                  title="Abrir assuntos por setor"
+                >
+                  <span class="submenu-icone" aria-hidden="true">▦</span>
+                  <span>Assuntos por setor</span>
+                </button>
+              </div>
+            </div>
 
             <!-- FINANCEIRO E CREDENCIAMENTO -->
 
