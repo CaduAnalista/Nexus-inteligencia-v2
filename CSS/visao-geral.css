@@ -699,3 +699,15 @@ button:focus-visible,a:focus-visible {
   }
 
 }
+
+/* Kanbans dentro da Inteligência de Rede — preserva o estilo do menu original */
+.grupo-inteligencia{width:100%;min-width:0}
+.linha-inteligencia{display:flex;align-items:center;gap:2px}
+.linha-inteligencia>.submenu-item{flex:1;min-width:0}
+.expandir-inteligencia{flex:0 0 31px;min-height:32px;border:0;border-radius:7px;background:transparent;color:#80c9e9;font-size:21px;cursor:pointer;transition:transform .15s,background .15s}
+.expandir-inteligencia:hover,.expandir-inteligencia:focus-visible{background:#1a3b54}
+.expandir-inteligencia[aria-expanded=true]{transform:rotate(180deg)}
+#submenuInteligencia[hidden]{display:none!important}
+#submenuInteligencia{padding:3px 0 5px 16px;gap:2px;border-left:1px solid #21465e;margin-left:16px}
+#submenuInteligencia .submenu-item{padding-top:9px;padding-bottom:9px;font-size:12px}
+#submenuInteligencia .submenu-icone{font-size:13px}
