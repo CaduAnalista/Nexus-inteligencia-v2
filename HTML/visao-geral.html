@@ -178,34 +178,23 @@
             id="submenuDashboards"
           >
 
-            <!-- INTELIGÊNCIA DE REDE -->
-
-            <button
-              type="button"
-              class="submenu-item"
-              data-pagina="inteligencia"
-              data-url="./inteligencia.html"
-              title="Abrir Inteligência de Rede"
-            >
-
-              <span
-                class="submenu-icone"
-                aria-hidden="true"
-              >
-                ◎
-              </span>
-
-              <span>
-                Inteligência de Rede
-              </span>
-
-            </button>
-
-            <!-- KANBAN SETORIAL -->
-            <button type="button" class="submenu-item" data-pagina="kanban-tratativas" data-url="./kanban-tratativas.html?v=5" title="Abrir Kanban de tratativas">
-              <span class="submenu-icone" aria-hidden="true">▥</span>
-              <span>Kanban de tratativas</span>
-            </button>
+            <!-- INTELIGÊNCIA DE REDE: página original + Kanbans setoriais -->
+            <div class="grupo-inteligencia" id="grupoInteligencia">
+              <div class="linha-inteligencia">
+                <button type="button" class="submenu-item" data-pagina="inteligencia" data-url="./inteligencia.html" title="Abrir Inteligência de Rede"><span class="submenu-icone" aria-hidden="true">◎</span><span>Inteligência de Rede</span></button>
+                <button type="button" id="botaoExpandirInteligencia" class="expandir-inteligencia" aria-expanded="false" aria-controls="submenuInteligencia" aria-label="Expandir setores de Inteligência de Rede" title="Mostrar ou ocultar Kanbans">⌄</button>
+              </div>
+              <div class="submenu submenu-inteligencia" id="submenuInteligencia" hidden>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-adm-pat" data-url="./kanban-tratativas.html?setor=adm-pat" title="Abrir Kanban de ADM/PAT"><span class="submenu-icone" aria-hidden="true">▥</span><span>ADM/PAT</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-reembolso" data-url="./kanban-tratativas.html?setor=reembolso" title="Abrir Kanban de Reembolso"><span class="submenu-icone" aria-hidden="true">▥</span><span>Reembolso</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-credenciamento" data-url="./kanban-tratativas.html?setor=credenciamento" title="Abrir Kanban de Credenciamento"><span class="submenu-icone" aria-hidden="true">▥</span><span>Credenciamento</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-auditoria" data-url="./kanban-tratativas.html?setor=auditoria" title="Abrir Kanban de Auditoria"><span class="submenu-icone" aria-hidden="true">▥</span><span>Auditoria</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-cadastro" data-url="./kanban-tratativas.html?setor=cadastro" title="Abrir Kanban de Cadastro"><span class="submenu-icone" aria-hidden="true">▥</span><span>Cadastro</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-captacao" data-url="./kanban-tratativas.html?setor=captacao" title="Abrir Kanban de Captação"><span class="submenu-icone" aria-hidden="true">▥</span><span>Captação</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-financeiro" data-url="./kanban-tratativas.html?setor=financeiro" title="Abrir Kanban de Financeiro"><span class="submenu-icone" aria-hidden="true">▥</span><span>Financeiro</span></button>
+                <button type="button" class="submenu-item submenu-item-setor" data-pagina="kanban-triagem" data-url="./kanban-tratativas.html?setor=triagem" title="Abrir Kanban de Triagem"><span class="submenu-icone" aria-hidden="true">▥</span><span>Triagem</span></button>
+              </div>
+            </div>
 
             <!-- SAÚDE E SOCIAL -->
 
