@@ -39,8 +39,8 @@
     "submenuDashboards"
   );
 
-  const botaoProblemas = document.getElementById("botaoProblemasSetoriais");
-  const submenuProblemas = document.getElementById("submenuProblemasSetoriais");
+  const botaoFormularioReuniao = document.getElementById("botaoFormularioReuniao");
+  const submenuFormularioReuniao = document.getElementById("submenuFormularioReuniao");
 
   const paginaInicial = document.getElementById(
     "paginaInicial"
@@ -278,27 +278,27 @@
   );
 
   /* ================================================
-     SUBMENU PROBLEMAS-SETORIAIS
+     SUBMENU FORMULÁRIO DE REUNIÃO
   ================================================= */
 
-  function definirSubmenuProblemas(aberto) {
-    if (!botaoProblemas || !submenuProblemas) return;
-    submenuProblemas.hidden = !aberto;
-    submenuProblemas.classList.toggle("aberto", aberto);
-    botaoProblemas.setAttribute("aria-expanded", String(aberto));
-    botaoProblemas.setAttribute(
+  function definirSubmenuFormularioReuniao(aberto) {
+    if (!botaoFormularioReuniao || !submenuFormularioReuniao) return;
+    submenuFormularioReuniao.hidden = !aberto;
+    submenuFormularioReuniao.classList.toggle("aberto", aberto);
+    botaoFormularioReuniao.setAttribute("aria-expanded", String(aberto));
+    botaoFormularioReuniao.setAttribute(
       "aria-label",
-      aberto ? "Recolher Problemas-Setoriais" : "Expandir Problemas-Setoriais"
+      aberto ? "Recolher Formulário de reunião" : "Expandir Formulário de reunião"
     );
   }
 
-  if (botaoProblemas && submenuProblemas) {
-    botaoProblemas.addEventListener("click", () => {
+  if (botaoFormularioReuniao && submenuFormularioReuniao) {
+    botaoFormularioReuniao.addEventListener("click", () => {
       if (menuRecolhido) definirMenuLateral(false);
       definirSubmenu(true);
-      definirSubmenuProblemas(submenuProblemas.hidden);
+      definirSubmenuFormularioReuniao(submenuFormularioReuniao.hidden);
     });
-    definirSubmenuProblemas(false);
+    definirSubmenuFormularioReuniao(false);
   }
 
   /* ================================================
@@ -341,10 +341,10 @@
       );
     }
 
-    if (botaoProblemas) {
-      const ativoProblemas = ["formulario-reuniao", "assuntos-por-setor"].includes(idPagina);
-      botaoProblemas.classList.toggle("ativo", ativoProblemas);
-      if (ativoProblemas) definirSubmenuProblemas(true);
+    if (botaoFormularioReuniao) {
+      const ativoFormularioReuniao = ["formulario-reuniao", "assuntos-por-setor"].includes(idPagina);
+      botaoFormularioReuniao.classList.toggle("ativo", ativoFormularioReuniao);
+      if (ativoFormularioReuniao) definirSubmenuFormularioReuniao(true);
     }
 
     botoesDashboards.forEach(botao => {
@@ -565,7 +565,7 @@
       if (["formulario-reuniao", "assuntos-por-setor"].includes(idPagina)) {
         if (menuRecolhido) definirMenuLateral(false);
         definirSubmenu(true);
-        definirSubmenuProblemas(true);
+        definirSubmenuFormularioReuniao(true);
       }
 
       abrirDashboard(idPagina, url);
