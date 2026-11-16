@@ -122,6 +122,11 @@
         "Análise territorial e rede assistencial"
     },
 
+    "kanban-tratativas": {
+      titulo: "Kanban de tratativas",
+      subtitulo: "Gestão setorial de ocorrências e prazos"
+    },
+
     "saude-social": {
       titulo: "Saúde e Social",
       subtitulo:
