@@ -21,6 +21,7 @@
   const cartoes = new Map(Array.from(grade.querySelectorAll('.cartao-setor[data-setor]')).map(c => [c.dataset.setor, c]));
   let registros = [];
   let idEditando = null;
+  let idPlano = null;
 
   function dataLocalISO(data = new Date()) {
     return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
@@ -143,6 +144,14 @@
     const texto = document.createElement('span');
     texto.className = 'texto-assunto';
     texto.textContent = item.assunto;
+    texto.setAttribute('role', 'button');
+    texto.setAttribute('tabindex', '0');
+    texto.setAttribute('title', 'Abrir plano de ação 5W2H');
+    texto.setAttribute('aria-label', `Abrir plano de ação do assunto: ${item.assunto}`);
+    texto.addEventListener('click', () => abrirPlano(item.id));
+    texto.addEventListener('keydown', evento => {
+      if (evento.key === 'Enter' || evento.key === ' ') { evento.preventDefault(); abrirPlano(item.id); }
+    });
     corpo.appendChild(texto);
     const etiqueta = document.createElement('span');
     etiqueta.className = 'assunto-status ' + (status === 'pendente' ? '' : status === 'concluido-reuniao' ? 'concluido' : 'antecipado');
@@ -159,6 +168,7 @@
     corpo.appendChild(meta);
     const controles = document.createElement('div');
     controles.className = 'assunto-controles';
+    controles.appendChild(botao(item.plano5w2h ? 'Ver 5W2H' : 'Criar 5W2H', 'plano', () => abrirPlano(item.id)));
     controles.appendChild(botao('Editar', 'editar', () => abrirEdicao(item.id)));
     if (status === 'pendente') {
       controles.appendChild(botao('Resolver antes', 'resolver', () => mudarStatus(item.id, 'resolvido-antecipadamente')));
@@ -244,6 +254,87 @@
       notificar('Não foi possível ler os assuntos armazenados neste navegador.', true);
     }
   }
+  // Cada registro mantém seu plano 5W2H e um histórico de versões no mesmo armazenamento.
+  const dialogoPlano = $('dialogoPlano');
+  const formPlano = $('formPlano');
+  const camposPlano = {
+    oQue: $('planoOQue'), porQue: $('planoPorQue'), onde: $('planoOnde'),
+    quando: $('planoQuando'), quem: $('planoQuem'), como: $('planoComo'), quanto: $('planoQuanto')
+  };
+  const historicoPlano = $('historicoPlano');
+  const historicoLista = $('historicoPlanoLista');
+  const botaoHistorico = $('alternarHistoricoPlano');
+
+  function abrirPlano(id) {
+    const item = registros.find(r => r && String(r.id) === String(id));
+    if (!item) { notificar('Assunto não encontrado. Atualize a página.', true); return; }
+    idPlano = String(id);
+    $('planoAssuntoTitulo').textContent = `Assunto: ${item.assunto}`;
+    const plano = item.plano5w2h || {};
+    Object.entries(camposPlano).forEach(([chave, campo]) => { campo.value = plano[chave] || ''; });
+    $('erroPlano').textContent = '';
+    historicoPlano.hidden = true;
+    botaoHistorico.textContent = 'Ver histórico';
+    historicoLista.replaceChildren();
+    const historico = Array.isArray(item.historico5w2h) ? item.historico5w2h : [];
+    if (!historico.length) {
+      const vazio = document.createElement('p');
+      vazio.textContent = 'Nenhuma versão anterior registrada.';
+      historicoLista.appendChild(vazio);
+    } else {
+      [...historico].reverse().forEach((versao, indice) => {
+        const artigo = document.createElement('article');
+        artigo.className = 'versao-plano';
+        const titulo = document.createElement('strong');
+        titulo.textContent = `Versão anterior ${historico.length - indice} · ${dataLegivel(versao.salvoEm) || 'Data não informada'}`;
+        artigo.appendChild(titulo);
+        const nomes = {oQue:'O que',porQue:'Por que',onde:'Onde',quando:'Quando',quem:'Quem',como:'Como',quanto:'Quanto'};
+        Object.entries(nomes).forEach(([chave, nome]) => {
+          const linha = document.createElement('p');
+          linha.textContent = `${nome}: ${versao[chave] || 'Não informado'}`;
+          artigo.appendChild(linha);
+        });
+        historicoLista.appendChild(artigo);
+      });
+    }
+    dialogoPlano.showModal();
+  }
+  botaoHistorico.addEventListener('click', () => {
+    historicoPlano.hidden = !historicoPlano.hidden;
+    botaoHistorico.textContent = historicoPlano.hidden ? 'Ver histórico' : 'Ocultar histórico';
+  });
+  $('fecharPlano').addEventListener('click', () => dialogoPlano.close());
+  $('cancelarPlano').addEventListener('click', () => dialogoPlano.close());
+  dialogoPlano.addEventListener('close', () => { idPlano = null; $('erroPlano').textContent = ''; });
+  formPlano.addEventListener('submit', evento => {
+    evento.preventDefault();
+    if (!idPlano || !formPlano.reportValidity()) return;
+    const valores = Object.fromEntries(Object.entries(camposPlano).map(([chave, campo]) => [chave, campo.value.trim()]));
+    if (!valores.oQue || !valores.porQue || !valores.quando || !valores.quem || !valores.como) {
+      $('erroPlano').textContent = 'Preencha todos os campos obrigatórios.';
+      return;
+    }
+    try {
+      const atuais = lerRegistros();
+      const item = atuais.find(r => r && String(r.id) === idPlano);
+      if (!item) { $('erroPlano').textContent = 'Assunto não encontrado. Atualize a página.'; return; }
+      const agora = new Date().toISOString();
+      if (item.plano5w2h && typeof item.plano5w2h === 'object') {
+        if (!Array.isArray(item.historico5w2h)) item.historico5w2h = [];
+        item.historico5w2h.push({...item.plano5w2h});
+      }
+      item.plano5w2h = {...valores, salvoEm: agora};
+      item.atualizadoEm = agora;
+      salvarRegistros(atuais);
+      registros = atuais;
+      dialogoPlano.close();
+      renderizar();
+      notificar('Plano de ação 5W2H salvo com sucesso. O status do assunto foi preservado.');
+    } catch (erro) {
+      console.error('Falha ao salvar plano 5W2H:', erro);
+      $('erroPlano').textContent = 'Não foi possível salvar o plano de ação neste navegador.';
+    }
+  });
   SETORES.forEach(s => {
     const option = document.createElement('option');
     option.value = s;
