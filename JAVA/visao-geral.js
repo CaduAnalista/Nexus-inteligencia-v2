@@ -39,6 +39,8 @@
     "submenuDashboards"
   );
 
+  const botaoExpandirInteligencia = document.getElementById("botaoExpandirInteligencia");
+  const submenuInteligencia = document.getElementById("submenuInteligencia");
   const botaoFormularioReuniao = document.getElementById("botaoFormularioReuniao");
   const submenuFormularioReuniao = document.getElementById("submenuFormularioReuniao");
 
@@ -122,11 +124,14 @@
         "Análise territorial e rede assistencial"
     },
 
-    "kanban-tratativas": {
-      titulo: "Kanban de tratativas",
-      subtitulo: "Gestão setorial de ocorrências e prazos"
-    },
-
+    "kanban-adm-pat": { titulo: "Kanban · ADM/PAT", subtitulo: "Gestão de protocolos e tratativas do setor ADM/PAT" },
+    "kanban-reembolso": { titulo: "Kanban · Reembolso", subtitulo: "Gestão de protocolos e tratativas do setor Reembolso" },
+    "kanban-credenciamento": { titulo: "Kanban · Credenciamento", subtitulo: "Gestão de protocolos e tratativas do setor Credenciamento" },
+    "kanban-auditoria": { titulo: "Kanban · Auditoria", subtitulo: "Gestão de protocolos e tratativas do setor Auditoria" },
+    "kanban-cadastro": { titulo: "Kanban · Cadastro", subtitulo: "Gestão de protocolos e tratativas do setor Cadastro" },
+    "kanban-captacao": { titulo: "Kanban · Captação", subtitulo: "Gestão de protocolos e tratativas do setor Captação" },
+    "kanban-financeiro": { titulo: "Kanban · Financeiro", subtitulo: "Gestão de protocolos e tratativas do setor Financeiro" },
+    "kanban-triagem": { titulo: "Kanban · Triagem", subtitulo: "Gestão de protocolos e tratativas do setor Triagem" },
     "saude-social": {
       titulo: "Saúde e Social",
       subtitulo:
@@ -282,6 +287,23 @@
     }
   );
 
+  /* SUBMENU INTELIGÊNCIA DE REDE — sem alterar a página original */
+  function definirSubmenuInteligencia(aberto) {
+    if (!submenuInteligencia || !botaoExpandirInteligencia) return;
+    submenuInteligencia.hidden = !aberto;
+    submenuInteligencia.classList.toggle("aberto", aberto);
+    botaoExpandirInteligencia.setAttribute("aria-expanded", String(aberto));
+    botaoExpandirInteligencia.setAttribute("aria-label", aberto ? "Recolher setores de Inteligência de Rede" : "Expandir setores de Inteligência de Rede");
+  }
+  if (botaoExpandirInteligencia && submenuInteligencia) {
+    botaoExpandirInteligencia.addEventListener("click", () => {
+      if (menuRecolhido) definirMenuLateral(false);
+      definirSubmenu(true);
+      definirSubmenuInteligencia(submenuInteligencia.hidden);
+    });
+    definirSubmenuInteligencia(false);
+  }
+
   /* ================================================
      SUBMENU FORMULÁRIO DE REUNIÃO
   ================================================= */
@@ -351,6 +373,8 @@
       botaoFormularioReuniao.classList.toggle("ativo", ativoFormularioReuniao);
       if (ativoFormularioReuniao) definirSubmenuFormularioReuniao(true);
     }
+
+    if (idPagina.startsWith("kanban-") && submenuInteligencia) definirSubmenuInteligencia(true);
 
     botoesDashboards.forEach(botao => {
       const ativo =
@@ -571,6 +595,12 @@
         if (menuRecolhido) definirMenuLateral(false);
         definirSubmenu(true);
         definirSubmenuFormularioReuniao(true);
+      }
+
+      if (idPagina.startsWith("kanban-")) {
+        if (menuRecolhido) definirMenuLateral(false);
+        definirSubmenu(true);
+        definirSubmenuInteligencia(true);
       }
 
       abrirDashboard(idPagina, url);
