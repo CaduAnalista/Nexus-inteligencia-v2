@@ -73,6 +73,32 @@
       </article>
     </section>
   </main>
+
+  <dialog id="dialogoPlano" class="dialogo-plano" aria-labelledby="tituloPlano">
+    <form id="formPlano" class="form-plano">
+      <header class="plano-cabecalho">
+        <div><span class="plano-sobretitulo">PLANEJAMENTO E ACOMPANHAMENTO</span><h2 id="tituloPlano">5W2H — Plano de ação</h2><p id="planoAssuntoTitulo"></p></div>
+        <button type="button" id="fecharPlano" class="plano-fechar" aria-label="Fechar plano de ação">×</button>
+      </header>
+      <div class="plano-campos">
+        <label><span>O que será feito? <em>*</em></span><textarea id="planoOQue" rows="2" maxlength="800" required></textarea></label>
+        <label><span>Por que será feito? <em>*</em></span><textarea id="planoPorQue" rows="2" maxlength="800" required></textarea></label>
+        <label><span>Onde será feito?</span><input id="planoOnde" type="text" maxlength="200" placeholder="Local, unidade ou setor"></label>
+        <label><span>Quando será feito? <em>*</em></span><input id="planoQuando" type="date" required></label>
+        <label><span>Quem será responsável? <em>*</em></span><input id="planoQuem" type="text" maxlength="160" required></label>
+        <label><span>Como será feito? <em>*</em></span><textarea id="planoComo" rows="3" maxlength="1200" required></textarea></label>
+        <label><span>Quanto custará?</span><input id="planoQuanto" type="text" maxlength="160" placeholder="Ex.: Sem custo ou R$ 500,00"></label>
+      </div>
+      <p id="erroPlano" class="erro-plano" role="alert"></p>
+      <section id="historicoPlano" class="historico-plano" hidden aria-label="Histórico do plano de ação">
+        <h3>Histórico de alterações</h3><div id="historicoPlanoLista"></div>
+      </section>
+      <footer class="plano-rodape">
+        <button type="button" id="alternarHistoricoPlano" class="botao-modal-secundario">Ver histórico</button>
+        <div class="plano-rodape-direita"><button type="button" id="cancelarPlano" class="botao-modal-secundario">Cancelar</button><button type="submit" class="botao-modal-primario">Salvar plano de ação</button></div>
+      </footer>
+    </form>
+  </dialog>
   <dialog id="dialogoEditar" class="dialogo-edicao" aria-labelledby="tituloEdicao">
     <form id="formEditarAssunto" class="form-edicao">
       <h2 id="tituloEdicao">Editar assunto</h2>
